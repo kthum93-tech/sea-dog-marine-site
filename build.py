@@ -476,12 +476,19 @@ for key, c in COUNTIES.items():
         body, [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", area_ld), faq_schema(faqs),
                crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html"), (c["name"], c["slug"] + ".html")])])
 
-# Service areas hub
-hub = "".join(f"""<div class="area big"><h2><a href="{c['slug']}.html">{c['name']}</a></h2><ul class="cities">{''.join('<li>'+x+'</li>' for x in c['cities'])}</ul></div>""" for c in COUNTIES.values())
+# Service areas hub. County blurbs reuse the copy already published on each county page.
+hub = "".join(
+    f"""<div class="area big"><h2><a href="{c['slug']}.html">{c['name']}</a></h2>
+<p>{c['intro']}</p>
+<p>{c['local']}</p>
+<p><a href="{c['slug']}.html">Dock, seawall and piling cleaning in {c['name']}</a>. Cities and communities we serve there:</p>
+<ul class="cities">{''.join('<li>'+x+'</li>' for x in c['cities'])}</ul></div>"""
+    for c in COUNTIES.values()
+)
 pages["service-areas.html"] = page("service-areas.html", "Tampa Bay Dock Cleaning Service Areas | Sea Dog Marine",
     "Dock and seawall cleaning service areas across Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Service Areas</span></div>
-<section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder and boat lift cleaning for waterfront properties across three counties.</p><div class="areas">{hub}</div></section>""",
+<section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder and boat lift cleaning for waterfront properties across Pinellas, Hillsborough and Manatee counties. Pick a county below for the cities we serve and the same marine cleaning services.</p><div class="areas">{hub}</div></section>""",
     [business_ld(), crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html")])])
 
 # Free inspection / contact
@@ -492,6 +499,15 @@ pages["free-video-inspection.html"] = page("free-video-inspection.html", "Free V
 <section class="wrap svc"><div class="svc-main">
 <h1>Free Video Inspection and Quote</h1>
 <p class="lead">No waiting around for a site visit. Text us a short video and we will tell you exactly what your dock, seawall, pilings or lift need and what it will cost.</p>
+<h2>What you get</h2>
+<p>Text a short video or photos of your dock, seawall or lift to {PHONE_DISPLAY}. We review it and send back a recommendation and a price, often the same day, with no site visit needed to get started. The recommendation says what the dock, seawall, pilings or lift needs. Price depends on size, amount of growth and access.</p>
+<h2>How it works</h2>
+<ol>
+<li><b>Send a video.</b> Text a short video or photos to {PHONE_DISPLAY}. A 30 to 60 second video walking the dock or seawall is enough, with close ups of pilings, ladders and lift cradles. Include your address or nearest city, your name and the best time to reach you.</li>
+<li><b>Get a price.</b> We review it and send a clear recommendation and quote, usually the same day.</li>
+<li><b>We clean and restore.</b> The crew removes algae, barnacles, oysters, mold and marine growth, then documents the work with before and after photos.</li>
+<li><b>We protect it.</b> Add piling wraps or a maintenance plan to keep growth from coming back. Plans can include scheduled cleanings, storm prep and a photo report after every visit.</li>
+</ol>
 <h2>What to send</h2><ul class="checks col"><li>A 30 to 60 second video walking the dock or seawall</li><li>Close ups of pilings, ladders and lift cradles</li><li>Your address or nearest city</li><li>Your name and the best time to reach you</li></ul>
 <div class="hero-btns"><a class="btn red" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
 {faq_html(insp_faq)}
