@@ -305,7 +305,7 @@ def cta_block():
 <div class="cta-btns"><a class="btn red" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
 </div></section>"""
 
-def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_type="website", extra_head=""):
+def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_type="website", extra_head="", robots="index, follow, max-image-preview:large"):
     canonical = url(fname)
     safe_title = html.escape(title, quote=True)
     safe_desc = html.escape(desc, quote=True)
@@ -321,7 +321,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
 <title>{safe_title}</title>
 <meta name="description" content="{safe_desc}">
 <link rel="canonical" href="{canonical}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="{html.escape(robots, quote=True)}">
 <meta name="geo.region" content="US-FL">
 <meta name="geo.placename" content="Tampa Bay">
 <meta property="og:type" content="{og_type}">
@@ -662,6 +662,20 @@ for f in os.listdir("assets"):
 for fn, doc in pages.items():
     open(f"{OUT}/{fn}", "w").write(doc)
 
+not_found = page(
+    "404.html",
+    "Page Not Found | Sea Dog Marine",
+    "That page is not on the Sea Dog Marine site. Call or text 727-699-4920 for dock and seawall cleaning in Pinellas, Hillsborough and Manatee counties.",
+    f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Page not found</span></div>
+<section class="wrap"><h1>Page not found</h1>
+<p class="lead">That page is not on the {BIZ} site. Go back to the home page, or call or text {PHONE_DISPLAY} for dock, seawall, piling, ladder and boat lift cleaning in Pinellas, Hillsborough and Manatee counties.</p>
+<p><a class="btn red" href="index.html">Back to home</a></p>
+</section>""",
+    [],
+    robots="noindex, follow",
+)
+open(f"{OUT}/404.html", "w").write(not_found)
+
 prio = {"index.html": "1.0", "free-video-inspection.html": "0.9"}
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
 for fn in pages:
@@ -838,4 +852,13 @@ def assert_schema(pages):
 
 assert_meta(pages)
 assert_schema(pages)
+not_found_html = open(f"{OUT}/404.html").read()
+if "<title>Page Not Found | Sea Dog Marine</title>" not in not_found_html:
+    raise SystemExit("404 title is wrong")
+if 'name="robots" content="noindex, follow"' not in not_found_html:
+    raise SystemExit("404 robots must be noindex, follow")
+if "application/ld+json" in not_found_html:
+    raise SystemExit("404 must not repeat homepage schema")
+if "404.html" in open(f"{OUT}/sitemap.xml").read():
+    raise SystemExit("404 must stay out of the sitemap")
 print("Built", len(pages), "pages")
