@@ -670,6 +670,20 @@ pages["blog.html"] = page("blog.html", "Tampa Bay Dock and Seawall Care Blog | S
      crumbs([("Home", "index.html"), ("Blog", "blog.html")])])
 
 # ------------------------------------------------------------------ write
+def prior_site(out_dir):
+    import re
+    old_html, old_lastmod = {}, {}
+    if not os.path.isdir(out_dir):
+        return old_html, old_lastmod
+    sm_path = os.path.join(out_dir, "sitemap.xml")
+    if os.path.exists(sm_path):
+        old_lastmod = dict(re.findall(r"<loc>(.*?)</loc><lastmod>(.*?)</lastmod>", open(sm_path).read()))
+    for name in os.listdir(out_dir):
+        if name.endswith(".html"):
+            old_html[name] = open(os.path.join(out_dir, name), encoding="utf-8").read()
+    return old_html, old_lastmod
+
+old_html, old_lastmod = prior_site(OUT)
 if os.path.exists(OUT):
     shutil.rmtree(OUT)
 os.makedirs(OUT + "/assets")
@@ -694,8 +708,19 @@ open(f"{OUT}/404.html", "w").write(not_found)
 
 prio = {"index.html": "1.0", "free-video-inspection.html": "0.9"}
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-for fn in pages:
-    sm += f"  <url><loc>{url(fn)}</loc><lastmod>{TODAY}</lastmod><priority>{prio.get(fn, '0.8')}</priority></url>\n"
+blog_locs = []
+for fn, doc in pages.items():
+    loc = url(fn)
+    # Keep the previous lastmod when the HTML did not change. 404 is not a sitemap URL.
+    if old_html.get(fn) == doc and loc in old_lastmod:
+        lastmod = old_lastmod[loc]
+    else:
+        lastmod = TODAY
+    if fn == "blog.html":
+        blog_locs.append(loc)
+    sm += f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod><priority>{prio.get(fn, '0.8')}</priority></url>\n"
+if len(blog_locs) != 1:
+    raise SystemExit("blog.html must appear exactly once in the sitemap")
 open(f"{OUT}/sitemap.xml", "w").write(sm + "</urlset>\n")
 
 open(f"{OUT}/robots.txt", "w").write(f"""User-agent: *
@@ -726,6 +751,17 @@ Allow: /
 Sitemap: {SITE_URL}/sitemap.xml
 """)
 
+def page_meta(fn):
+    import re
+    doc = pages[fn]
+    title = html.unescape(re.search(r"<title>(.*?)</title>", doc).group(1))
+    desc = html.unescape(re.search(r'<meta name="description" content="(.*?)">', doc).group(1))
+    return title, desc
+
+def llms_link(fn):
+    title, desc = page_meta(fn)
+    return f"- [{title}]({url(fn)}): {desc}"
+
 llms = f"""# {BIZ}
 
 > {BIZ} is a marine cleaning and maintenance company serving waterfront property owners in Pinellas, Hillsborough and Manatee counties, Florida (Tampa Bay). Call or text {PHONE_DISPLAY} for a free video inspection.
@@ -740,16 +776,29 @@ llms = f"""# {BIZ}
 - Hours: {'; '.join(h[3] for h in HOURS)}
 
 ## Services
-""" + "\n".join(f"- [{s['name']}]({url(s['slug'] + '.html')}): {s['desc']}" for s in SERVICES) + """
+""" + "\n".join(llms_link(s["slug"] + ".html") for s in SERVICES) + """
 
 ## Service areas
-""" + "\n".join(f"- [{c['name']}]({url(c['slug'] + '.html')})" for c in COUNTIES.values()) + f"""
+""" + "\n".join(llms_link(c["slug"] + ".html") for c in COUNTIES.values()) + "\n" + llms_link("service-areas.html") + f"""
 
 ## Contact
-- [Free Video Inspection]({url('free-video-inspection.html')})
+""" + llms_link("free-video-inspection.html") + """
 
 ## Guides for waterfront homeowners
-""" + "\n".join(f"- [{p['title']}]({url('blog-' + p['slug'] + '.html')}): {p['desc']}" for p in POSTS) + "\n"
+""" + llms_link("blog.html") + "\n" + "\n".join(llms_link("blog-" + p["slug"] + ".html") for p in POSTS) + "\n"
+if PHONE_DISPLAY not in llms or "Pinellas County, Hillsborough County and Manatee County" not in llms:
+    raise SystemExit("llms.txt is missing the phone number or service area")
+if "\u2014" in llms:
+    raise SystemExit("em dash in llms.txt")
+for s in SERVICES:
+    if url(s["slug"] + ".html") not in llms:
+        raise SystemExit(f"llms.txt missing {s['slug']}")
+for c in COUNTIES.values():
+    if url(c["slug"] + ".html") not in llms:
+        raise SystemExit(f"llms.txt missing {c['slug']}")
+for p in POSTS:
+    if url("blog-" + p["slug"] + ".html") not in llms:
+        raise SystemExit(f"llms.txt missing {p['slug']}")
 open(f"{OUT}/llms.txt", "w").write(llms)
 
 def assert_meta(pages):
