@@ -13,11 +13,14 @@ PHONE_DISPLAY = "727-699-4920"
 PHONE_E164 = "+17276994920"
 EMAIL = ""            # TODO: add business email (leave blank to hide)
 BASE_CITY = ""        # TODO: city Shea operates from, e.g. "St. Petersburg"
+POSTAL_CODE = ""      # TODO: ZIP code for the base city. Leave blank. Do not guess.
+GEO = None            # TODO: dict with real "latitude" and "longitude" floats from a map pin. Leave None. Do not guess.
+HAS_MAP = ""          # TODO: Google Business Profile map URL. Leave blank. Do not invent a URL.
 HOURS = [  # TODO: confirm. Must match Google + Apple listings exactly
     ("Mo,Tu,We,Th,Fr", "07:00", "18:00", "Monday to Friday: 7:00 AM to 6:00 PM"),
     ("Sa", "08:00", "14:00", "Saturday: 8:00 AM to 2:00 PM"),
 ]
-SAME_AS = [  # TODO: paste Google Business Profile, Facebook, Instagram, Yelp URLs
+SAME_AS = [  # TODO: paste Google Business Profile, Facebook, Instagram URLs. Leave empty. Do not invent URLs.
 ]
 # ====================================================================
 
@@ -173,12 +176,22 @@ def url(page):
 def org_ref():
     return {"@id": SITE_URL + "/#business"}
 
-def business_schema():
+def served_places(counties):
     areas = []
-    for c in COUNTIES.values():
+    for c in counties:
         areas.append({"@type": "AdministrativeArea", "name": c["name"] + ", FL"})
         for city in c["cities"]:
             areas.append({"@type": "City", "name": city + ", FL"})
+    return areas
+
+def real_text(value):
+    value = (value or "").strip()
+    if not value or "TODO" in value.upper():
+        return ""
+    return value
+
+def business_schema():
+    areas = served_places(COUNTIES.values())
     d = {
         "@context": "https://schema.org",
         "@type": ["HomeAndConstructionBusiness", "LocalBusiness"],
@@ -201,13 +214,58 @@ def business_schema():
             + [{"@type": "Offer", "price": "0", "priceCurrency": "USD", "itemOffered": {"@type": "Service", "name": "Free Video Inspection"}}]},
         "contactPoint": {"@type": "ContactPoint", "telephone": PHONE_E164, "contactType": "customer service", "areaServed": "US-FL", "availableLanguage": "English"},
     }
-    if BASE_CITY:
-        d["address"]["addressLocality"] = BASE_CITY
-    if EMAIL:
-        d["email"] = EMAIL
-    if SAME_AS:
-        d["sameAs"] = SAME_AS
+    city = real_text(BASE_CITY)
+    postal = real_text(POSTAL_CODE)
+    email = real_text(EMAIL)
+    has_map = real_text(HAS_MAP)
+    if city:
+        d["address"]["addressLocality"] = city
+    if postal:
+        d["address"]["postalCode"] = postal
+    if email and "@" in email:
+        d["email"] = email
+    same_as = [u for u in SAME_AS if isinstance(u, str) and u.startswith("https://")]
+    if same_as:
+        d["sameAs"] = same_as
+    if has_map.startswith("https://"):
+        d["hasMap"] = has_map
+    if isinstance(GEO, dict):
+        lat, lng = GEO.get("latitude"), GEO.get("longitude")
+        if isinstance(lat, (int, float)) and isinstance(lng, (int, float)) and not isinstance(lat, bool) and not isinstance(lng, bool):
+            d["geo"] = {"@type": "GeoCoordinates", "latitude": lat, "longitude": lng}
+    d["founder"] = {
+        "@type": "Person",
+        "name": "Shea [TODO last name]",
+        "jobTitle": "Owner, Sea Dog Marine",
+        "worksFor": org_ref(),
+    }
     return d
+
+def local_todo_comment():
+    missing = []
+    if not real_text(BASE_CITY):
+        missing.append("address.addressLocality (set BASE_CITY)")
+    if not real_text(POSTAL_CODE):
+        missing.append("address.postalCode (set POSTAL_CODE)")
+    if not (isinstance(GEO, dict) and isinstance(GEO.get("latitude"), (int, float)) and not isinstance(GEO.get("latitude"), bool)):
+        missing.append("geo GeoCoordinates (set GEO latitude and longitude from a real pin)")
+    if not (real_text(EMAIL) and "@" in EMAIL):
+        missing.append("email (set EMAIL)")
+    if not any(isinstance(u, str) and u.startswith("https://") for u in SAME_AS):
+        missing.append("sameAs URLs for Google Business Profile, Facebook and Instagram (set SAME_AS)")
+    if not real_text(HAS_MAP).startswith("https://"):
+        missing.append("hasMap Google Business Profile map URL (set HAS_MAP)")
+    lines = "\n".join("- " + item for item in missing)
+    return (
+        "<!-- TODO for Kyle/Shea: LocalBusiness fields below are omitted so the JSON-LD stays valid. "
+        "Fill the real values in the CONFIG block of build.py. Do not guess coordinates, URLs, a city or a ZIP.\n"
+        + lines
+        + "\nFounder name is \"Shea [TODO last name]\" until a real last name is provided.\n"
+        + "Do not add aggregateRating or review without real review data. -->"
+    )
+
+def business_ld():
+    return (local_todo_comment(), business_schema())
 
 def faq_schema(faqs):
     return {"@context": "https://schema.org", "@type": "FAQPage",
@@ -342,7 +400,7 @@ home_body = f"""
 pages["index.html"] = page("index.html",
     "Dock & Seawall Cleaning Tampa Bay | Sea Dog Marine",
     "Dock and seawall cleaning in Tampa Bay, Florida. Barnacle and oyster removal with a free video inspection. Text or call 727-699-4920 for a quote.",
-    home_body, [business_schema(), faq_schema(FAQ_HOME),
+    home_body, [business_ld(), faq_schema(FAQ_HOME),
                 {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE_URL + "/#website", "url": SITE_URL + "/", "name": BIZ, "publisher": org_ref()}])
 
 # Service pages
@@ -364,12 +422,12 @@ for s in SERVICES:
 <aside class="side"><div class="box"><h3>Get a Free Video Inspection</h3><p>Text a video or photos and get a price fast.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
 <div class="box"><h3>Other Services</h3><ul>{others}</ul></div></aside>
 </section>"""
+    # TODO: add Service.offers only when real prices are provided. Do not invent prices.
     service_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["name"], "serviceType": s["name"],
-                  "description": s["lead"], "provider": org_ref(), "url": url(s["slug"] + ".html"),
-                  "areaServed": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"} for c in COUNTIES.values()],
-                  "offers": {"@type": "Offer", "description": "Free video inspection and quote", "price": "0", "priceCurrency": "USD"}}
+                  "description": s["desc"], "provider": org_ref(), "url": url(s["slug"] + ".html"),
+                  "areaServed": served_places(COUNTIES.values())}
     pages[s["slug"] + ".html"] = page(s["slug"] + ".html", s["title"], s["desc"], body,
-        [business_schema(), service_ld, faq_schema(s["faqs"]), crumbs([("Home", "index.html"), (s["name"], s["slug"] + ".html")])],
+        [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", service_ld), faq_schema(s["faqs"]), crumbs([("Home", "index.html"), (s["name"], s["slug"] + ".html")])],
         og_img="assets/" + s["img"])
 
 # County pages. Titles and descriptions are hand-counted to 50-60 and 140-155 characters.
@@ -409,12 +467,13 @@ for key, c in COUNTIES.items():
 <aside class="side"><div class="box"><h3>Free Video Inspection</h3><p>Serving all of {c['name']}.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div></aside>
 </section>"""
     area_ld = {"@context": "https://schema.org", "@type": "Service", "name": f"Marine cleaning in {c['name']}",
-               "serviceType": "Dock, seawall, piling and boat lift cleaning", "provider": org_ref(),
-               "areaServed": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"}] + [{"@type": "City", "name": x + ", FL"} for x in c["cities"]]}
+               "serviceType": "Dock, seawall, piling and boat lift cleaning",
+               "description": COUNTY_META[key][1], "provider": org_ref(), "url": url(c["slug"] + ".html"),
+               "areaServed": served_places([c])}
     pages[c["slug"] + ".html"] = page(c["slug"] + ".html",
         COUNTY_META[key][0],
         COUNTY_META[key][1],
-        body, [business_schema(), area_ld, faq_schema(faqs),
+        body, [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", area_ld), faq_schema(faqs),
                crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html"), (c["name"], c["slug"] + ".html")])])
 
 # Service areas hub
@@ -423,7 +482,7 @@ pages["service-areas.html"] = page("service-areas.html", "Tampa Bay Dock Cleanin
     "Dock and seawall cleaning service areas across Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Service Areas</span></div>
 <section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder and boat lift cleaning for waterfront properties across three counties.</p><div class="areas">{hub}</div></section>""",
-    [business_schema(), crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html")])])
+    [business_ld(), crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html")])])
 
 # Free inspection / contact
 insp_faq = [FAQ_HOME[2], FAQ_HOME[3]]
@@ -437,7 +496,7 @@ pages["free-video-inspection.html"] = page("free-video-inspection.html", "Free V
 <div class="hero-btns"><a class="btn red" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
 {faq_html(insp_faq)}
 </div></section>""",
-    [business_schema(), faq_schema(insp_faq), crumbs([("Home", "index.html"), ("Free Video Inspection", "free-video-inspection.html")])])
+    [business_ld(), faq_schema(insp_faq), crumbs([("Home", "index.html"), ("Free Video Inspection", "free-video-inspection.html")])])
 
 # ------------------------------------------------------------------ blog
 from blog_posts import POSTS
@@ -582,7 +641,7 @@ for i, p in enumerate(POSTS):
     article_meta.append('<meta property="article:section" content="Waterfront Maintenance">')
     date_comment = "<!-- TODO: BlogPosting datePublished and dateModified omitted until real dates are known. -->" if not (published and modified) else ""
     pages[fn] = page(fn, meta_title, meta_desc, body,
-        [business_schema(), (date_comment, art), faq_schema(p["faqs"]), crumbs([("Home", "index.html"), ("Blog", "blog.html"), (p["title"], fn)])],
+        [business_ld(), (date_comment, art), faq_schema(p["faqs"]), crumbs([("Home", "index.html"), ("Blog", "blog.html"), (p["title"], fn)])],
         og_img="assets/" + p["img"], og_type="article", extra_head="\n".join(article_meta) + "\n")
 
 blog_cards = "".join(f"""<a class="card" href="blog-{p['slug']}.html"><img src="assets/{p['img']}" alt="{p['title']}" loading="lazy" width="560" height="360"><div><h3>{p['title']}</h3><p>{p['desc']}</p><span class="more">Read article</span></div></a>""" for p in POSTS)
@@ -590,7 +649,7 @@ pages["blog.html"] = page("blog.html", "Tampa Bay Dock and Seawall Care Blog | S
     "Dock and seawall guides for Tampa Bay homeowners in Pinellas, Hillsborough and Manatee. Barnacle and oyster tips. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Blog</span></div>
 <section class="wrap"><h1>Waterfront Home Maintenance Blog</h1><p class="lead">Straight answers for Tampa Bay waterfront homeowners on keeping docks, seawalls, pilings and lifts clean, safe and built to last.</p><div class="cards">{blog_cards}</div></section>""",
-    [business_schema(), {"@context": "https://schema.org", "@type": "Blog", "name": f"{BIZ} Blog", "url": url("blog.html"), "publisher": org_ref(),
+    [business_ld(), {"@context": "https://schema.org", "@type": "Blog", "name": f"{BIZ} Blog", "url": url("blog.html"), "publisher": org_ref(),
       "blogPost": [{"@type": "BlogPosting", "headline": p["title"], "url": url("blog-" + p["slug"] + ".html")} for p in POSTS]},
      crumbs([("Home", "index.html"), ("Blog", "blog.html")])])
 
@@ -707,5 +766,76 @@ def assert_meta(pages):
     if set(BLOG_META) != {p["slug"] for p in POSTS}:
         raise SystemExit("BLOG_META slugs do not match posts")
 
+def assert_schema(pages):
+    import re
+    service_pages = {s["slug"] + ".html": s for s in SERVICES}
+    county_pages = {c["slug"] + ".html": (key, c) for key, c in COUNTIES.items()}
+    seen_business = False
+    for fn, doc in pages.items():
+        for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>', doc):
+            data = json.loads(raw)
+            if "aggregateRating" in raw or re.search(r'"review"\s*:', raw):
+                raise SystemExit(f"review or rating schema on {fn}")
+            if data.get("@id") == SITE_URL + "/#business":
+                seen_business = True
+                if data.get("@type") != ["HomeAndConstructionBusiness", "LocalBusiness"]:
+                    raise SystemExit(f"business @type changed on {fn}")
+                founder = data.get("founder") or {}
+                if founder.get("@type") != "Person" or founder.get("name") != "Shea [TODO last name]":
+                    raise SystemExit(f"founder missing on {fn}")
+                if founder.get("worksFor", {}).get("@id") != SITE_URL + "/#business":
+                    raise SystemExit(f"founder worksFor @id mismatch on {fn}")
+                for key in ("email", "sameAs", "hasMap", "geo"):
+                    if key in data:
+                        raise SystemExit(f"{key} shipped without real data on {fn}")
+                addr = data.get("address") or {}
+                if "addressLocality" in addr or "postalCode" in addr:
+                    raise SystemExit(f"address placeholder shipped on {fn}")
+            if data.get("@type") == "Service":
+                for key in ("serviceType", "description", "areaServed", "provider"):
+                    if not data.get(key):
+                        raise SystemExit(f"Service missing {key} on {fn}")
+                if data["provider"].get("@id") != SITE_URL + "/#business":
+                    raise SystemExit(f"Service provider @id mismatch on {fn}")
+                if "offers" in data:
+                    raise SystemExit(f"Service.offers present without real prices on {fn}")
+                names = [a.get("name") for a in data["areaServed"]]
+                desc = html.unescape(re.search(r'<meta name="description" content="(.*?)">', doc).group(1))
+                if data["description"] != desc:
+                    raise SystemExit(f"Service description does not match meta description on {fn}")
+                if fn in service_pages:
+                    for county in COUNTIES.values():
+                        if county["name"] + ", FL" not in names:
+                            raise SystemExit(f"{fn} missing {county['name']}")
+                        for city in county["cities"]:
+                            if city + ", FL" not in names:
+                                raise SystemExit(f"{fn} missing {city}")
+                if fn in county_pages:
+                    key, county = county_pages[fn]
+                    if county["name"] + ", FL" not in names:
+                        raise SystemExit(f"{fn} missing its county")
+                    for city in county["cities"]:
+                        if city + ", FL" not in names:
+                            raise SystemExit(f"{fn} missing {city}")
+                    for other in COUNTIES.values():
+                        if other["name"] != county["name"] and other["name"] + ", FL" in names:
+                            raise SystemExit(f"{fn} includes another county")
+            def walk(obj):
+                if isinstance(obj, dict):
+                    ref = obj.get("@id")
+                    if isinstance(ref, str) and ref.endswith("#business") and ref != SITE_URL + "/#business":
+                        raise SystemExit(f"inconsistent business @id on {fn}: {ref}")
+                    for value in obj.values():
+                        walk(value)
+                elif isinstance(obj, list):
+                    for value in obj:
+                        walk(value)
+            walk(data)
+        if fn != "404.html" and 'id="https://www.seadogmarinefl.com/#business"' not in doc and '"@id": "https://www.seadogmarinefl.com/#business"' not in doc:
+            raise SystemExit(f"missing business @id on {fn}")
+    if not seen_business:
+        raise SystemExit("no LocalBusiness schema")
+
 assert_meta(pages)
+assert_schema(pages)
 print("Built", len(pages), "pages")
