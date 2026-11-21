@@ -3,7 +3,7 @@
 Edit the CONFIG block, then run:  python3 build.py
 Outputs plain .html pages, sitemap.xml, robots.txt and llms.txt into ./site
 """
-import json, os, shutil, datetime
+import html, json, os, shutil, datetime
 
 # ================= CONFIG (update before going live) =================
 SITE_URL = "https://www.seadogmarinefl.com"   # TODO: real domain, no trailing slash
@@ -55,8 +55,9 @@ COUNTIES = {
 SERVICES = [
     {
         "slug": "dock-cleaning", "name": "Dock Cleaning", "img": "dock.jpg",
-        "title": "Dock Cleaning in Tampa Bay | Sea Dog Marine",
-        "desc": "Professional dock cleaning in Pinellas, Hillsborough and Manatee counties. We remove algae, mold, barnacles and marine growth from decking and framing. Free video inspection.",
+        "title": "Dock Cleaning in Tampa Bay, Florida | Sea Dog Marine",
+        "desc": "Dock cleaning in Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal from decking and framing. Text for a free video inspection.",
+        "card": "We remove algae, mold, barnacles and marine growth from decking and framing",
         "h1": "Dock Cleaning in Pinellas, Hillsborough and Manatee Counties",
         "lead": "Slick, green dock boards are a fall hazard and a sign that wood and fasteners are breaking down. Sea Dog Marine deep cleans wood and composite docks, removing algae, mold, mildew, bird droppings and marine growth so your dock is safe, clean and ready to use.",
         "includes": ["Deck boards, walkways and stairs", "Fingers, T heads and platforms", "Cleats, bumpers and hardware", "Framing and stringers at the waterline", "Removal of algae, mold, mildew and growth", "Before and after photos of the work"],
@@ -69,8 +70,9 @@ SERVICES = [
     },
     {
         "slug": "seawall-cleaning", "name": "Seawall Cleaning", "img": "seawall.jpg",
-        "title": "Seawall Cleaning in Tampa Bay | Sea Dog Marine",
-        "desc": "Seawall cleaning in Pinellas, Hillsborough and Manatee counties. We remove barnacles, oysters and algae from seawall faces and caps so you can see cracks before they spread.",
+        "title": "Seawall Cleaning in Tampa Bay, Florida | Sea Dog Marine",
+        "desc": "Seawall cleaning in Tampa Bay, Florida. Barnacle and oyster removal from the wall face and cap so cracks show. Text for a free video inspection.",
+        "card": "We remove barnacles, oysters and algae from seawall faces and caps so you can see cracks before they spread.",
         "h1": "Seawall Cleaning in Pinellas, Hillsborough and Manatee Counties",
         "lead": "Your seawall protects your yard, your pool and your home. When it is covered in barnacles, oysters and algae, you cannot see the cracks, spalling or seepage that lead to costly failures. Sea Dog Marine strips marine growth from the wall face and cap so the wall looks right and you can see its true condition.",
         "includes": ["Seawall face cleaning down to the low tide line", "Seawall cap cleaning", "Barnacle and oyster removal", "Algae, slime and stain removal", "Visual condition check during cleaning", "Photo and video documentation"],
@@ -83,8 +85,9 @@ SERVICES = [
     },
     {
         "slug": "piling-cleaning", "name": "Piling Cleaning", "img": "after.jpg",
-        "title": "Dock Piling Cleaning and Barnacle Removal | Sea Dog Marine",
-        "desc": "Dock piling cleaning and barnacle removal across Tampa Bay. Sea Dog Marine removes oysters, barnacles and algae from wood and concrete pilings. Call or text 727-699-4920.",
+        "title": "Piling Cleaning in Tampa Bay, Florida | Sea Dog Marine",
+        "desc": "Piling cleaning in Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal from wood and concrete pilings. Text for a free inspection.",
+        "card": "Sea Dog Marine removes oysters, barnacles and algae from wood and concrete pilings",
         "h1": "Dock Piling Cleaning and Barnacle Removal",
         "lead": "Pilings carry the full weight of your dock and lift. Barnacles and oysters add weight, trap moisture and hide rot and marine borer damage. We clean pilings from the cap down through the tidal zone so they look new and you can see what condition they are really in.",
         "includes": ["Wood and concrete pilings", "Barnacle, oyster and algae removal", "Tidal zone cleaning", "Piling caps and tops", "Condition notes on soft spots or damage", "Ready for piling wraps if you choose"],
@@ -97,8 +100,9 @@ SERVICES = [
     },
     {
         "slug": "boat-lift-cleaning", "name": "Boat Lift Cleaning", "img": "lift.jpg",
-        "title": "Boat Lift Cleaning in Tampa Bay | Sea Dog Marine",
-        "desc": "Boat lift cleaning in Pinellas, Hillsborough and Manatee counties. We remove barnacles and growth from cradles, bunks, beams and cables so your lift runs smoothly.",
+        "title": "Boat Lift Cleaning in Tampa Bay, FL | Sea Dog Marine",
+        "desc": "Boat lift cleaning in Tampa Bay, FL. Barnacle and oyster removal from cradles, bunks and beams so the lift runs smoothly. Text for a free video inspection.",
+        "card": "We remove barnacles and growth from cradles, bunks, beams and cables so your lift runs smoothly.",
         "h1": "Boat Lift Cleaning in Pinellas, Hillsborough and Manatee Counties",
         "lead": "Marine growth on a boat lift adds weight, chews up bunk carpet, scratches hulls and stresses motors, cables and gearboxes. Sea Dog Marine cleans the whole lift so it works the way it should and protects your boat instead of damaging it.",
         "includes": ["Cradles, bunks and guide posts", "Beams, I beams and platforms", "Lift pilings", "Barnacle and oyster removal", "Visual check of cables and hardware", "Photos of any wear we notice"],
@@ -111,8 +115,9 @@ SERVICES = [
     },
     {
         "slug": "ladder-cleaning", "name": "Dock Ladder Cleaning", "img": "ladder.jpg",
-        "title": "Dock Ladder Cleaning and Degrowth | Sea Dog Marine",
-        "desc": "Dock ladder cleaning and degrowth across Tampa Bay. We remove barnacles, oysters and slime from swim and dock ladders so they are safe to use again.",
+        "title": "Dock Ladder Cleaning in Tampa Bay, FL | Sea Dog Marine",
+        "desc": "Dock ladder cleaning in Pinellas, Hillsborough and Manatee. Barnacle, oyster and slime removal so ladders are safe. Text for a free video inspection.",
+        "card": "We remove barnacles, oysters and slime from swim and dock ladders so they are safe to use again.",
         "h1": "Dock Ladder Cleaning and Degrowth",
         "lead": "A ladder covered in barnacles and slime is dangerous. Sharp shells cut hands and feet and slippery rungs cause falls. Sea Dog Marine strips growth from aluminum, stainless and wood ladders so they are safe for swimming, diving and getting on and off your boat.",
         "includes": ["Aluminum, stainless and wood ladders", "Rungs, rails and mounting brackets", "Barnacle and oyster removal", "Slime and algae removal", "Check of mounts and fasteners"],
@@ -124,8 +129,9 @@ SERVICES = [
     },
     {
         "slug": "piling-wraps", "name": "Piling and Dock Protection Wraps", "img": "after.jpg",
-        "title": "Piling Wraps and Dock Protection | Sea Dog Marine",
-        "desc": "Piling wraps and dock protection in Pinellas, Hillsborough and Manatee counties. Protect wood pilings from marine borers, rot and growth. Free video inspection.",
+        "title": "Piling Wraps in Tampa Bay, Florida | Sea Dog Marine",
+        "desc": "Piling wraps in Tampa Bay, FL. Clean wood pilings first, then protect them from marine borers and rot. Text 727-699-4920 for a free video inspection.",
+        "card": "Protect wood pilings from marine borers, rot and growth",
         "h1": "Piling Wraps and Dock Protection",
         "lead": "Piling wraps seal wood pilings in the tidal zone, where marine borers, rot and growth do the most damage. Sea Dog Marine cleans each piling first, then installs protective wraps that help your dock last years longer.",
         "includes": ["Full cleaning before wrapping", "Protective wrap installation through the tidal zone", "Wraps for dock and boat lift pilings", "Neat, secure, finished look", "Recommendations on which pilings need it most"],
@@ -137,8 +143,9 @@ SERVICES = [
     },
     {
         "slug": "maintenance-plans", "name": "Maintenance Plans and Storm Prep", "img": "dock.jpg",
-        "title": "Waterfront Maintenance Plans and Storm Prep | Sea Dog Marine",
-        "desc": "Recurring dock, seawall, piling and boat lift maintenance plans plus storm prep and seasonal cleaning for Tampa Bay waterfront homes. Call or text 727-699-4920.",
+        "title": "Maintenance Plans in Tampa Bay, FL | Sea Dog Marine",
+        "desc": "Waterfront maintenance plans in Pinellas, Hillsborough and Manatee counties. Scheduled cleaning plus storm prep. Text for a free video inspection today.",
+        "card": "Call or text 727-699-4920.",
         "h1": "Waterfront Maintenance Plans and Storm Prep",
         "lead": "The easiest way to keep a waterfront property looking great is to never let growth get out of hand. Sea Dog Marine maintenance plans put your dock, seawall, pilings, ladders and lift on a regular schedule, with storm prep and post storm cleanup built in.",
         "includes": ["Scheduled cleanings on a set interval", "Pre hurricane season inspection and cleaning", "Post storm debris and growth cleanup", "Photo report after every visit", "Priority scheduling for plan members", "Great for rentals, HOAs and part time owners"],
@@ -230,6 +237,8 @@ def cta_block():
 
 def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
     canonical = url(fname)
+    safe_title = html.escape(title, quote=True)
+    safe_desc = html.escape(desc, quote=True)
     svc_links = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in SERVICES)
     area_links = "".join(f'<li><a href="{c["slug"]}.html">{c["name"]}</a></li>' for c in COUNTIES.values())
     hours = "<br>".join(h[3] for h in HOURS)
@@ -239,19 +248,21 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<meta name="description" content="{desc}">
+<title>{safe_title}</title>
+<meta name="description" content="{safe_desc}">
 <link rel="canonical" href="{canonical}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="geo.region" content="US-FL">
 <meta name="geo.placename" content="Tampa Bay">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{BIZ}">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{desc}">
+<meta property="og:title" content="{safe_title}">
+<meta property="og:description" content="{safe_desc}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{SITE_URL}/{og_img}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{safe_title}">
+<meta name="twitter:description" content="{safe_desc}">
 <meta name="theme-color" content="#0b2a4a">
 <link rel="icon" href="assets/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -283,7 +294,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
 pages = {}
 
 # Home
-svc_cards = "".join(f"""<a class="card" href="{s['slug']}.html"><img src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay" loading="lazy" width="560" height="360"><div><h3>{s['name']}</h3><p>{s['desc'].split('. ')[1] if '. ' in s['desc'] else s['desc']}</p><span class="more">Learn more</span></div></a>""" for s in SERVICES)
+svc_cards = "".join(f"""<a class="card" href="{s['slug']}.html"><img src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay" loading="lazy" width="560" height="360"><div><h3>{s['name']}</h3><p>{s['card']}</p><span class="more">Learn more</span></div></a>""" for s in SERVICES)
 county_cards = "".join(f"""<a class="area" href="{c['slug']}.html"><h3>{c['name']}</h3><p>{', '.join(c['cities'][:6])} and more</p></a>""" for c in COUNTIES.values())
 home_body = f"""
 <section class="hero"><div class="wrap hero-in">
@@ -317,8 +328,8 @@ home_body = f"""
 <div class="wrap">{faq_html(FAQ_HOME)}</div>
 """
 pages["index.html"] = page("index.html",
-    f"Dock and Seawall Cleaning Tampa Bay | {BIZ} | Pinellas, Hillsborough, Manatee",
-    f"{BIZ} cleans docks, seawalls, pilings, ladders and boat lifts in Pinellas, Hillsborough and Manatee counties. Barnacle, oyster and algae removal. Free video inspections. Call or text {PHONE_DISPLAY}.",
+    "Dock & Seawall Cleaning Tampa Bay | Sea Dog Marine",
+    "Dock and seawall cleaning in Tampa Bay, Florida. Barnacle and oyster removal with a free video inspection. Text or call 727-699-4920 for a quote.",
     home_body, [business_schema(), faq_schema(FAQ_HOME),
                 {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE_URL + "/#website", "url": SITE_URL + "/", "name": BIZ, "publisher": org_ref()}])
 
@@ -349,7 +360,22 @@ for s in SERVICES:
         [business_schema(), service_ld, faq_schema(s["faqs"]), crumbs([("Home", "index.html"), (s["name"], s["slug"] + ".html")])],
         og_img="assets/" + s["img"])
 
-# County pages
+# County pages. Titles and descriptions are hand-counted to 50-60 and 140-155 characters.
+COUNTY_META = {
+    "pinellas": (
+        "Dock Cleaning in Pinellas County, FL | Sea Dog Marine",
+        "Dock and seawall cleaning in Pinellas County, FL, from St. Petersburg to Clearwater. Barnacle and oyster removal. Text for a free video inspection.",
+    ),
+    "hillsborough": (
+        "Dock Cleaning in Hillsborough County, FL | Sea Dog Marine",
+        "Dock and seawall cleaning in Hillsborough County, FL, including Tampa and Apollo Beach. Barnacle and oyster removal. Text for a free video inspection.",
+    ),
+    "manatee": (
+        "Dock Cleaning in Manatee County, FL | Sea Dog Marine",
+        "Dock and seawall cleaning in Manatee County, FL, from Bradenton to Anna Maria. Barnacle and oyster removal. Text for a free video inspection today.",
+    ),
+}
+
 for key, c in COUNTIES.items():
     city_list = "".join(f"<li>{x}</li>" for x in c["cities"])
     svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in SERVICES)
@@ -374,23 +400,23 @@ for key, c in COUNTIES.items():
                "serviceType": "Dock, seawall, piling and boat lift cleaning", "provider": org_ref(),
                "areaServed": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"}] + [{"@type": "City", "name": x + ", FL"} for x in c["cities"]]}
     pages[c["slug"] + ".html"] = page(c["slug"] + ".html",
-        f"Dock and Seawall Cleaning {c['name']} FL | {BIZ}",
-        f"Dock, seawall, piling and boat lift cleaning in {c['name']}, FL: {', '.join(c['cities'][:4])} and more. Barnacle and oyster removal. Free video inspection, call or text {PHONE_DISPLAY}.",
+        COUNTY_META[key][0],
+        COUNTY_META[key][1],
         body, [business_schema(), area_ld, faq_schema(faqs),
                crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html"), (c["name"], c["slug"] + ".html")])])
 
 # Service areas hub
 hub = "".join(f"""<div class="area big"><h2><a href="{c['slug']}.html">{c['name']}</a></h2><ul class="cities">{''.join('<li>'+x+'</li>' for x in c['cities'])}</ul></div>""" for c in COUNTIES.values())
-pages["service-areas.html"] = page("service-areas.html", f"Service Areas | Tampa Bay Marine Cleaning | {BIZ}",
-    f"{BIZ} serves waterfront homes, HOAs and marinas across Pinellas, Hillsborough and Manatee counties. See every city we serve.",
+pages["service-areas.html"] = page("service-areas.html", "Tampa Bay Dock Cleaning Service Areas | Sea Dog Marine",
+    "Dock and seawall cleaning service areas across Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Service Areas</span></div>
 <section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder and boat lift cleaning for waterfront properties across three counties.</p><div class="areas">{hub}</div></section>""",
     [business_schema(), crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html")])])
 
 # Free inspection / contact
 insp_faq = [FAQ_HOME[2], FAQ_HOME[3]]
-pages["free-video-inspection.html"] = page("free-video-inspection.html", f"Free Video Inspection | Dock and Seawall Quotes | {BIZ}",
-    f"Get a free video inspection and quote for dock, seawall, piling or boat lift cleaning in Tampa Bay. Text a video to {PHONE_DISPLAY}.",
+pages["free-video-inspection.html"] = page("free-video-inspection.html", "Free Video Inspection in Tampa Bay | Sea Dog Marine",
+    "Free video inspection for dock and seawall cleaning in Tampa Bay. See barnacle and oyster removal needs and get a price. Text 727-699-4920 to start.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Free Video Inspection</span></div>
 <section class="wrap svc"><div class="svc-main">
 <h1>Free Video Inspection and Quote</h1>
@@ -426,6 +452,74 @@ def md(body):
         out.append("</ul>")
     return "\n".join(out)
 
+# Title tags stay 50-60 characters. H1s in blog_posts.py stay the full headline.
+BLOG_META = {
+    "how-often-clean-dock-tampa-bay": (
+        "How Often to Clean a Dock in Tampa Bay | Sea Dog Marine",
+        "Dock cleaning schedule in Pinellas, Hillsborough and Manatee. Most docks need barnacle removal every 6 to 12 months. Text for a free inspection.",
+    ),
+    "barnacles-vs-oysters-seawall": (
+        "Barnacles vs Oysters on a Tampa Bay Seawall | Sea Dog Marine",
+        "Seawall growth in Tampa Bay: how barnacles, oysters and algae differ on Pinellas, Hillsborough and Manatee walls. Text for a free video inspection.",
+    ),
+    "signs-seawall-failing": (
+        "7 Warning Signs Your Seawall Is Failing | Sea Dog Marine",
+        "Seawall warning signs in Pinellas, Hillsborough and Manatee. Cleaning removes barnacles and oysters so cracks show. Text for a free video inspection.",
+    ),
+    "are-piling-wraps-worth-it": (
+        "Are Piling Wraps Worth It in Tampa Bay? | Sea Dog Marine",
+        "Piling wraps in Tampa Bay protect sound wood pilings from marine borers after barnacle and oyster removal. Text 727-699-4920 for a free video inspection.",
+    ),
+    "hurricane-prep-dock-seawall-checklist": (
+        "Hurricane Prep Checklist for Tampa Bay | Sea Dog Marine",
+        "Hurricane prep for docks and seawalls in Pinellas, Hillsborough and Manatee. Remove barnacles, then photograph the wall. Text for a free video inspection.",
+    ),
+    "after-storm-dock-seawall-inspection": (
+        "After a Storm: Dock and Seawall Checklist | Sea Dog Marine",
+        "After a Tampa Bay storm, check the dock, seawall and lift before cleaning. Document damage, then remove growth. Text for a free video inspection.",
+    ),
+    "barnacles-boat-lift-damage": (
+        "How Barnacles Damage Your Boat Lift | Sea Dog Marine",
+        "Boat lift cleaning in Tampa Bay stops barnacles and oysters from straining cables and scratching hulls. Text 727-699-4920 for a free video inspection.",
+    ),
+    "dock-ladder-safety": (
+        "Make a Dock Ladder Safe for Kids and Guests | Sea Dog Marine",
+        "Dock ladder cleaning in Tampa Bay removes sharp barnacles and slick slime so kids and guests can climb safely. Text for a free video inspection today.",
+    ),
+    "seawall-dock-cleaning-home-value": (
+        "Clean the Dock and Seawall Before You Sell | Sea Dog Marine",
+        "Dock and seawall cleaning before you sell a Tampa Bay home. Barnacle and oyster removal shows the real condition. Text for a free video inspection.",
+    ),
+    "wood-vs-composite-dock-florida": (
+        "Wood vs Composite Dock Care in Salt Water | Sea Dog Marine",
+        "Dock cleaning for wood and composite boards in Tampa Bay salt water, plus barnacle removal on pilings. Text 727-699-4920 for a free video inspection.",
+    ),
+    "marine-borers-dock-piling-rot": (
+        "Marine Borers and Piling Rot in Tampa Bay | Sea Dog Marine",
+        "Piling cleaning in Tampa Bay exposes marine borer damage and rot hidden by barnacles and oysters. Text 727-699-4920 for a free video inspection.",
+    ),
+    "vacation-rental-seasonal-dock-maintenance": (
+        "Dock Care for Tampa Bay Vacation Rentals | Sea Dog Marine",
+        "Dock and seawall care for Tampa Bay vacation rentals and seasonal homes. Barnacle removal and scheduled cleaning. Text for a free video inspection.",
+    ),
+    "canal-community-hoa-seawall-maintenance": (
+        "Seawall Maintenance for Canal HOAs | Sea Dog Marine",
+        "Seawall cleaning for canal HOAs in Apollo Beach, Ruskin and Bradenton. Barnacle and oyster removal on a shared schedule. Text for a free inspection.",
+    ),
+    "buying-waterfront-home-dock-seawall-inspection": (
+        "What to Check on a Dock Before You Buy | Sea Dog Marine",
+        "Dock and seawall checks before buying a Tampa Bay waterfront home. Barnacle and oyster growth can hide damage. Text for a free video inspection.",
+    ),
+    "marine-growth-seasons-tampa-bay": (
+        "Why Marine Growth Explodes in Tampa Bay | Sea Dog Marine",
+        "Marine growth on Tampa Bay docks peaks in summer. Time barnacle and oyster removal for late spring and fall. Text for a free video inspection.",
+    ),
+    "diy-vs-professional-dock-cleaning": (
+        "DIY vs Professional Dock Cleaning Risks | Sea Dog Marine",
+        "DIY vs professional dock and seawall cleaning in Tampa Bay. Barnacle and oyster removal is safer with the right method. Text for a free video inspection.",
+    ),
+}
+
 for i, p in enumerate(POSTS):
     fn = "blog-" + p["slug"] + ".html"
     related_svc = "".join(f'<li><a href="{SVC_BY_SLUG[l]["slug"]}.html">{SVC_BY_SLUG[l]["name"]}</a></li>' for l in p["links"])
@@ -451,13 +545,14 @@ for i, p in enumerate(POSTS):
            "author": org_ref(), "publisher": org_ref(), "mainEntityOfPage": url(fn), "wordCount": words,
            "about": ["waterfront home maintenance", "Tampa Bay"],
            "spatialCoverage": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"} for c in COUNTIES.values()]}
-    pages[fn] = page(fn, p["title"] + " | " + BIZ, p["desc"], body,
+    meta_title, meta_desc = BLOG_META[p["slug"]]
+    pages[fn] = page(fn, meta_title, meta_desc, body,
         [business_schema(), art, faq_schema(p["faqs"]), crumbs([("Home", "index.html"), ("Blog", "blog.html"), (p["title"], fn)])],
         og_img="assets/" + p["img"])
 
 blog_cards = "".join(f"""<a class="card" href="blog-{p['slug']}.html"><img src="assets/{p['img']}" alt="{p['title']}" loading="lazy" width="560" height="360"><div><h3>{p['title']}</h3><p>{p['desc']}</p><span class="more">Read article</span></div></a>""" for p in POSTS)
-pages["blog.html"] = page("blog.html", f"Waterfront Home Maintenance Blog | Tampa Bay | {BIZ}",
-    "Tips for Tampa Bay waterfront homeowners on dock cleaning, seawall care, piling wraps, boat lifts and hurricane prep in Pinellas, Hillsborough and Manatee counties.",
+pages["blog.html"] = page("blog.html", "Tampa Bay Dock and Seawall Care Blog | Sea Dog Marine",
+    "Dock and seawall guides for Tampa Bay homeowners in Pinellas, Hillsborough and Manatee. Barnacle and oyster tips. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Blog</span></div>
 <section class="wrap"><h1>Waterfront Home Maintenance Blog</h1><p class="lead">Straight answers for Tampa Bay waterfront homeowners on keeping docks, seawalls, pilings and lifts clean, safe and built to last.</p><div class="cards">{blog_cards}</div></section>""",
     [business_schema(), {"@context": "https://schema.org", "@type": "Blog", "name": f"{BIZ} Blog", "url": url("blog.html"), "publisher": org_ref(),
@@ -470,8 +565,8 @@ if os.path.exists(OUT):
 os.makedirs(OUT + "/assets")
 for f in os.listdir("assets"):
     shutil.copy("assets/" + f, OUT + "/assets/" + f)
-for fn, html in pages.items():
-    open(f"{OUT}/{fn}", "w").write(html)
+for fn, doc in pages.items():
+    open(f"{OUT}/{fn}", "w").write(doc)
 
 prio = {"index.html": "1.0", "free-video-inspection.html": "0.9"}
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -532,4 +627,37 @@ llms = f"""# {BIZ}
 ## Guides for waterfront homeowners
 """ + "\n".join(f"- [{p['title']}]({url('blog-' + p['slug'] + '.html')}): {p['desc']}" for p in POSTS) + "\n"
 open(f"{OUT}/llms.txt", "w").write(llms)
+
+def assert_meta(pages):
+    import re
+    titles, descs = [], []
+    for fn, doc in pages.items():
+        raw_title = re.search(r"<title>(.*?)</title>", doc).group(1)
+        raw_desc = re.search(r'<meta name="description" content="(.*?)">', doc).group(1)
+        title = html.unescape(raw_title)
+        desc = html.unescape(raw_desc)
+        if not (50 <= len(title) <= 60):
+            raise SystemExit(f"title length {len(title)} for {fn}: {title}")
+        if not (140 <= len(desc) <= 155):
+            raise SystemExit(f"description length {len(desc)} for {fn}: {desc}")
+        if "\u2014" in doc:
+            raise SystemExit(f"em dash in {fn}")
+        og_title = re.search(r'<meta property="og:title" content="(.*?)">', doc).group(1)
+        tw_title = re.search(r'<meta name="twitter:title" content="(.*?)">', doc).group(1)
+        og_desc = re.search(r'<meta property="og:description" content="(.*?)">', doc).group(1)
+        tw_desc = re.search(r'<meta name="twitter:description" content="(.*?)">', doc).group(1)
+        if og_title != raw_title or tw_title != raw_title:
+            raise SystemExit(f"title mismatch on {fn}")
+        if og_desc != raw_desc or tw_desc != raw_desc:
+            raise SystemExit(f"description mismatch on {fn}")
+        titles.append(title)
+        descs.append(desc)
+    if len(set(titles)) != len(titles):
+        raise SystemExit("duplicate title tags")
+    if len(set(descs)) != len(descs):
+        raise SystemExit("duplicate meta descriptions")
+    if set(BLOG_META) != {p["slug"] for p in POSTS}:
+        raise SystemExit("BLOG_META slugs do not match posts")
+
+assert_meta(pages)
 print("Built", len(pages), "pages")
