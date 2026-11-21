@@ -148,7 +148,7 @@ SERVICES = [
         "slug": "maintenance-plans", "name": "Maintenance Plans and Storm Prep", "img": "dock.jpg",
         "title": "Maintenance Plans in Tampa Bay, FL | Sea Dog Marine",
         "desc": "Waterfront maintenance plans in Pinellas, Hillsborough and Manatee counties. Scheduled cleaning plus storm prep. Text for a free video inspection today.",
-        "card": "Call or text 727-699-4920.",
+        "card": "Scheduled dock, seawall, piling and lift cleaning with storm prep and a photo report after every visit.",
         "h1": "Waterfront Maintenance Plans and Storm Prep",
         "lead": "The easiest way to keep a waterfront property looking great is to never let growth get out of hand. Sea Dog Marine maintenance plans put your dock, seawall, pilings, ladders and lift on a regular schedule, with storm prep and post storm cleanup built in.",
         "includes": ["Scheduled cleanings on a set interval", "Pre hurricane season inspection and cleaning", "Post storm debris and growth cleanup", "Photo report after every visit", "Priority scheduling for plan members", "Great for rentals, HOAs and part time owners"],
@@ -159,6 +159,64 @@ SERVICES = [
             ("What is included in storm prep?", "We clean and inspect your dock, pilings, lift and seawall before storm season and document their condition with photos, which can help with insurance claims later."),
         ],
     },
+]
+
+# Dive services: in-water work done by a diver at the customer's dock or slip.
+# TODO for Shea: confirm dive certifications, pricing and recommended service intervals before adding any of them.
+# Do not invent certifications, prices or schedules. TODO: replace the reused images with real underwater job photos.
+DIVE_SERVICES = [
+    {
+        "slug": "hull-cleaning", "name": "Hull and Boat Bottom Cleaning", "img": "lift.jpg", "dive": True,
+        "title": "Hull and Boat Bottom Cleaning Tampa Bay | Sea Dog Marine",
+        "desc": "In-water hull and boat bottom cleaning in Pinellas, Hillsborough and Manatee. A diver removes barnacles and slime at your dock. Text 727-699-4920.",
+        "card": "A diver cleans barnacles, slime and growth off your hull and running gear at your dock or slip.",
+        "h1": "Hull and Boat Bottom Cleaning in Tampa Bay",
+        "lead": "Barnacles, grass and slime on a boat bottom slow you down, burn more fuel and make the engine work harder. Sea Dog Marine sends a diver to your dock or slip to clean the hull in the water, so your boat stays put and you do not pay for a haul out just to clean the bottom.",
+        "includes": ["Hull bottom cleaning in the water", "Barnacle, slime and grass removal", "Running gear, strainers and trim tabs", "Check of zinc anodes while we are down there", "Notes on anything that looks damaged", "Photos or video on request"],
+        "why": "A clean bottom means better speed, better fuel economy and less strain on the engine. Regular cleaning also keeps hard growth from building up to the point where it takes a haul out to remove.",
+        "faqs": [
+            ("Do I need to haul my boat out for bottom cleaning?", "No. A diver cleans the hull in the water at your dock, lift or slip, so there is no haul out needed just to clean the bottom."),
+            ("How often should a boat bottom be cleaned in Tampa Bay?", "It depends on your bottom paint, how often you run the boat and how fast growth comes back where it is kept. Text a photo or video and we will recommend a schedule for your boat."),
+            ("Can you check my zincs at the same time?", "Yes. We look at your zinc anodes during every hull cleaning and let you know when they need replacing."),
+        ],
+    },
+    {
+        "slug": "zinc-anode-replacement", "name": "Zinc Anode Replacement", "img": "after.jpg", "dive": True,
+        "title": "Zinc Anode Replacement in Tampa Bay | Sea Dog Marine",
+        "desc": "Underwater zinc anode replacement in Pinellas, Hillsborough and Manatee. A diver swaps worn zincs on shafts, props and trim tabs. Text 727-699-4920.",
+        "card": "A diver replaces worn zinc anodes on shafts, props and trim tabs without a haul out.",
+        "h1": "Zinc Anode Replacement in Tampa Bay",
+        "lead": "Zinc anodes are sacrificial metal that corrodes so your props, shafts, outdrives and trim tabs do not. Once the zincs are worn away, salt water starts eating the parts that cost real money. Sea Dog Marine replaces worn zincs in the water at your dock or slip.",
+        "includes": ["Inspection of all underwater zincs", "Replacement of worn shaft, prop and trim tab zincs", "Outdrive and engine leg anodes where reachable", "Clean contact surfaces before installing new zincs", "Report of what was replaced"],
+        "why": "Galvanic corrosion works quietly under the waterline. Fresh zincs are cheap compared with replacing a prop, shaft or outdrive that corroded because the anodes ran out.",
+        "faqs": [
+            ("What do zinc anodes do on a boat?", "Zinc anodes are sacrificial. They corrode first so the more valuable underwater metal, like props, shafts, trim tabs and outdrives, is protected from galvanic corrosion."),
+            ("How do I know when my zincs need replacing?", "Zincs wear down over time in salt water. We inspect them in the water and replace them when they are worn. Text a photo of your boat and we will set up a check."),
+            ("Can zincs be replaced without hauling the boat?", "Yes. Most shaft, prop and trim tab zincs can be replaced by a diver in the water at your dock or slip."),
+        ],
+    },
+    {
+        "slug": "prop-cleaning", "name": "Propeller Cleaning", "img": "ladder.jpg", "dive": True,
+        "title": "Propeller Cleaning in Tampa Bay, Florida | Sea Dog Marine",
+        "desc": "Underwater propeller cleaning in Pinellas, Hillsborough and Manatee. A diver removes barnacles from props, shafts and struts. Text 727-699-4920.",
+        "card": "A diver removes barnacles and growth from props, shafts and struts so the boat runs smooth.",
+        "h1": "Propeller and Running Gear Cleaning in Tampa Bay",
+        "lead": "Even a thin layer of barnacles on a propeller can cost you speed and add vibration. Sea Dog Marine cleans props, shafts, struts and rudders in the water so your boat runs the way it should.",
+        "includes": ["Propeller blade cleaning", "Shaft, strut and rudder cleaning", "Barnacle and hard growth removal", "Visual check for dings or damage", "Zinc check on the shaft and prop"],
+        "why": "Props are precision parts. Growth on the blades hurts performance and fuel economy, and cleaning them is one of the fastest ways to get a sluggish boat running right again.",
+        "faqs": [
+            ("Why does my boat feel slow or vibrate?", "Barnacles and growth on the propeller and running gear are a common cause. Cleaning the prop often brings back lost speed and smooths out vibration."),
+            ("Can prop cleaning be added to a hull cleaning?", "Yes. Most customers have the prop and running gear cleaned on the same dive as the hull."),
+        ],
+    },
+]
+SERVICES.extend(DIVE_SERVICES)
+DOCK_SERVICES = [s for s in SERVICES if not s.get("dive")]
+
+FAQ_DIVE = [
+    ("What dive services does Sea Dog Marine offer?", "Sea Dog Marine offers in-water hull and boat bottom cleaning, zinc anode replacement and propeller and running gear cleaning at your dock, lift or slip in Pinellas, Hillsborough and Manatee counties."),
+    ("Do I have to bring my boat anywhere?", "No. A diver comes to your dock, lift or marina slip and does the work in the water."),
+    ("How do I get a price for dive work?", "Text a photo or video of your boat, its length and where it is kept to 727-699-4920. We send back a recommendation and a price."),
 ]
 
 FAQ_HOME = [
@@ -199,7 +257,7 @@ def business_schema():
         "name": BIZ,
         "alternateName": "Sea Dog Marine Cleaning",
         "slogan": "Remove Growth. Restore. Protect.",
-        "description": "Sea Dog Marine provides professional dock cleaning, seawall cleaning, piling cleaning and barnacle removal, boat lift cleaning, ladder degrowth, piling wraps and waterfront maintenance plans in Pinellas, Hillsborough and Manatee counties, Florida.",
+        "description": "Sea Dog Marine provides professional dock cleaning, seawall cleaning, piling cleaning and barnacle removal, boat lift cleaning, ladder degrowth, piling wraps, waterfront maintenance plans and dive services (in-water hull cleaning, zinc anode replacement and propeller cleaning) in Pinellas, Hillsborough and Manatee counties, Florida.",
         "url": SITE_URL + "/",
         "telephone": PHONE_E164,
         "image": SITE_URL + "/assets/og-flyer.jpg",
@@ -207,7 +265,7 @@ def business_schema():
         "priceRange": "$$",
         "address": {"@type": "PostalAddress", "addressRegion": "FL", "addressCountry": "US"},
         "areaServed": areas,
-        "knowsAbout": ["dock cleaning", "seawall cleaning", "barnacle removal", "oyster removal", "piling cleaning", "piling wraps", "boat lift cleaning", "marine growth removal", "storm preparation for docks"],
+        "knowsAbout": ["dock cleaning", "seawall cleaning", "barnacle removal", "oyster removal", "piling cleaning", "piling wraps", "boat lift cleaning", "marine growth removal", "storm preparation for docks", "hull cleaning", "boat bottom cleaning", "zinc anode replacement", "propeller cleaning"],
         "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": [ {"Mo":"Monday","Tu":"Tuesday","We":"Wednesday","Th":"Thursday","Fr":"Friday","Sa":"Saturday","Su":"Sunday"}[x] for x in h[0].split(",")], "opens": h[1], "closes": h[2]} for h in HOURS],
         "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Marine Cleaning and Maintenance Services",
             "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"], "url": url(s["slug"] + ".html")}} for s in SERVICES]
@@ -296,8 +354,8 @@ def faq_html(faqs):
         out += f"<details><summary>{q}</summary><p>{a}</p></details>"
     return out + "</section>"
 
-NAV = [("Dock Cleaning", "dock-cleaning.html"), ("Seawalls", "seawall-cleaning.html"), ("Pilings", "piling-cleaning.html"),
-       ("Boat Lifts", "boat-lift-cleaning.html"), ("Service Areas", "service-areas.html"), ("Blog", "blog.html"), ("Free Inspection", "free-video-inspection.html")]
+NAV = [("Docks", "dock-cleaning.html"), ("Seawalls", "seawall-cleaning.html"), ("Pilings", "piling-cleaning.html"),
+       ("Boat Lifts", "boat-lift-cleaning.html"), ("Dive Services", "dive-services.html"), ("Areas", "service-areas.html"), ("Blog", "blog.html"), ("Free Inspection", "free-video-inspection.html")]
 
 def cta_block():
     return f"""<section class="cta"><div class="wrap cta-in">
@@ -364,7 +422,8 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
 pages = {}
 
 # Home
-svc_cards = "".join(f"""<a class="card" href="{s['slug']}.html"><img src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay" loading="lazy" width="560" height="360"><div><h3>{s['name']}</h3><p>{s['card']}</p><span class="more">Learn more</span></div></a>""" for s in SERVICES)
+svc_cards = "".join(f"""<a class="card" href="{s['slug']}.html"><img src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay" loading="lazy" width="560" height="360"><div><h3>{s['name']}</h3><p>{s['card']}</p><span class="more">Learn more</span></div></a>""" for s in DOCK_SERVICES)
+dive_cards = "".join(f"""<a class="card" href="{s['slug']}.html"><img src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay" loading="lazy" width="560" height="360"><div><h3>{s['name']}</h3><p>{s['card']}</p><span class="more">Learn more</span></div></a>""" for s in DIVE_SERVICES)
 county_cards = "".join(f"""<a class="area" href="{c['slug']}.html"><h3>{c['name']}</h3><p>{', '.join(c['cities'][:6])} and more</p></a>""" for c in COUNTIES.values())
 home_body = f"""
 <section class="hero"><div class="wrap hero-in">
@@ -380,10 +439,12 @@ home_body = f"""
 
 <section class="wrap answer">
 <h2>What does {BIZ} do?</h2>
-<p>{BIZ} is a marine cleaning and maintenance company serving waterfront property owners in Pinellas, Hillsborough and Manatee counties, Florida. Services include dock cleaning, seawall cleaning, dock piling cleaning and barnacle removal, boat lift cleaning, dock ladder degrowth, piling and dock protection wraps, storm prep and seasonal cleaning, and recurring maintenance plans. Customers can get a free video inspection by calling or texting {PHONE_DISPLAY}.</p>
+<p>{BIZ} is a marine cleaning and maintenance company serving waterfront property owners in Pinellas, Hillsborough and Manatee counties, Florida. Services include dock cleaning, seawall cleaning, dock piling cleaning and barnacle removal, boat lift cleaning, dock ladder degrowth, piling and dock protection wraps, storm prep and seasonal cleaning, recurring maintenance plans, and dive services including in-water hull and boat bottom cleaning, zinc anode replacement and propeller cleaning. Customers can get a free video inspection by calling or texting {PHONE_DISPLAY}.</p>
 </section>
 
 <section class="wrap"><h2 class="sec">Our Services</h2><div class="cards">{svc_cards}</div></section>
+
+<section class="wrap"><h2 class="sec">Dive Services</h2><p class="lead" style="text-align:center">A diver comes to your dock, lift or slip and works on your boat in the water. <a href="dive-services.html">See all dive services</a>.</p><div class="cards">{dive_cards}</div></section>
 
 <section class="band"><div class="wrap steps">
 <h2 class="sec">How It Works</h2>
@@ -448,7 +509,8 @@ COUNTY_META = {
 
 for key, c in COUNTIES.items():
     city_list = "".join(f"<li>{x}</li>" for x in c["cities"])
-    svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in SERVICES)
+    svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in DOCK_SERVICES)
+    dive_svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in DIVE_SERVICES)
     faqs = [
         (f"Do you offer dock and seawall cleaning in {c['name']}?", f"Yes. {BIZ} cleans docks, seawalls, pilings, ladders and boat lifts throughout {c['name']}, including {', '.join(c['cities'][:4])}."),
         (f"How do I get a quote in {c['name']}?", f"Text a short video or photos of your waterfront to {PHONE_DISPLAY}. We send back a recommendation and price, usually the same day."),
@@ -461,6 +523,7 @@ for key, c in COUNTIES.items():
 <p class="lead">{c['intro']}</p>
 <p>{c['local']}</p>
 <h2>Services in {c['name']}</h2><ul class="checks col">{svcs}</ul>
+<h2>Dive services in {c['name']}</h2><p>A diver comes to your dock, lift or slip anywhere in {c['name']}. <a href="dive-services.html">About our dive services</a>.</p><ul class="checks col">{dive_svcs}</ul>
 <h2>Cities and communities we serve in {c['name']}</h2><ul class="cities">{city_list}</ul>
 {faq_html(faqs)}
 </div>
@@ -513,6 +576,23 @@ pages["free-video-inspection.html"] = page("free-video-inspection.html", "Free V
 {faq_html(insp_faq)}
 </div></section>""",
     [business_ld(), faq_schema(insp_faq), crumbs([("Home", "index.html"), ("Free Video Inspection", "free-video-inspection.html")])])
+
+# Dive services hub
+dive_list = "".join(f'<li><a href="{s["slug"]}.html"><b>{s["name"]}</b></a>: {s["card"]}</li>' for s in DIVE_SERVICES)
+pages["dive-services.html"] = page("dive-services.html", "Boat Dive Services in Tampa Bay, Florida | Sea Dog Marine",
+    "Boat dive services in Pinellas, Hillsborough and Manatee: hull cleaning, zinc anode replacement and prop cleaning at your dock. Text 727-699-4920.",
+    f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Dive Services</span></div>
+<section class="wrap svc"><div class="svc-main">
+<h1>Boat Dive Services in Tampa Bay</h1>
+<p class="lead">{BIZ} does more than docks and seawalls. Our diver works on your boat in the water at your dock, lift or marina slip across Pinellas, Hillsborough and Manatee counties, so you can skip the haul out for routine underwater care.</p>
+<h2>Our dive services</h2><ul class="arealist">{dive_list}</ul>
+<h2>Why in-water service</h2><p>Growth on a hull and running gear costs speed and fuel, and worn zinc anodes leave props, shafts and outdrives open to corrosion. Handling this in the water at your dock keeps the boat ready to use and avoids the cost and downtime of hauling it out for routine work.</p>
+<div class="cards">{dive_cards}</div>
+{faq_html(FAQ_DIVE)}
+</div>
+<aside class="side"><div class="box"><h3>Get a Price</h3><p>Text a photo or video of your boat, its length and where it is kept.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div></aside>
+</section>""",
+    [business_ld(), faq_schema(FAQ_DIVE), crumbs([("Home", "index.html"), ("Dive Services", "dive-services.html")])])
 
 # ------------------------------------------------------------------ blog
 from blog_posts import POSTS
@@ -772,11 +852,12 @@ llms = f"""# {BIZ}
 - Service area: Pinellas County, Hillsborough County and Manatee County, Florida
 - Cities: {', '.join(sum([c['cities'] for c in COUNTIES.values()], []))}
 - Removes: algae, barnacles, oysters, mold and marine growth
+- Dive services: in-water hull and boat bottom cleaning, zinc anode replacement and propeller cleaning at the customer's dock, lift or slip
 - Free video inspections: text a video or photos for a same day quote
 - Hours: {'; '.join(h[3] for h in HOURS)}
 
 ## Services
-""" + "\n".join(llms_link(s["slug"] + ".html") for s in SERVICES) + """
+""" + "\n".join(llms_link(s["slug"] + ".html") for s in SERVICES) + "\n" + llms_link("dive-services.html") + """
 
 ## Service areas
 """ + "\n".join(llms_link(c["slug"] + ".html") for c in COUNTIES.values()) + "\n" + llms_link("service-areas.html") + f"""
