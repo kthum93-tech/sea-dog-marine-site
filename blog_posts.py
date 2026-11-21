@@ -1,11 +1,17 @@
 # 16 blog posts for Sea Dog Marine. Format: lines starting "## " are H2, "- " are bullets, others paragraphs.
 # "links" are service page slugs to cross link. Keep copy free of em dashes.
+# "quick" is a 2-3 sentence answer drawn only from the post body.
+# TODO: add "published" and "modified" as real YYYY-MM-DD dates when known.
+# Leave them unset. Do not invent staggered dates.
 
 POSTS = [
 {
 "slug": "how-often-clean-dock-tampa-bay",
 "title": "How Often Should You Clean Your Dock in Tampa Bay?",
 "desc": "A practical cleaning schedule for docks, seawalls, pilings and lifts in Pinellas, Hillsborough and Manatee counties, based on shade, water flow and use.",
+"quick": "For most private docks in Pinellas, Hillsborough and Manatee counties, a professional cleaning every 6 to 12 months is the right interval. Shaded docks, canal homes and lifts that sit lowered in the water usually need it every 6 months, while open sunny docks with good tidal flow can often go 12 months. Late spring, before hurricane season, is a strong time to clean.",
+"published": "",
+"modified": "",
 "img": "dock.jpg", "links": ["dock-cleaning", "maintenance-plans"],
 "body": """Most waterfront homeowners in Tampa Bay wait until the dock looks bad before they call anyone. By then, barnacles and oysters have had months to lock onto pilings, ladders and lift cradles, and the cleaning takes longer and costs more. A simple schedule keeps your dock safe and saves money over the life of the structure.
 ## The short answer
@@ -30,6 +36,9 @@ Send us a short video of your dock, pilings and seawall. We will look at how muc
 "slug": "barnacles-vs-oysters-seawall",
 "title": "Barnacles vs. Oysters: What Is Growing on Your Seawall?",
 "desc": "Learn the difference between barnacles, oysters, algae and other marine growth on Tampa Bay seawalls and docks, and why each one matters.",
+"quick": "The crust at the waterline is usually a mix of barnacles, oysters, algae and slime, not barnacles alone. Barnacles are sharp shells, oysters build heavy clusters in the tidal zone, and algae makes walking surfaces slippery. A cleaning removes all of it so cracks and rot are not hidden.",
+"published": "",
+"modified": "",
 "img": "seawall.jpg", "links": ["seawall-cleaning", "piling-cleaning"],
 "body": """If you own a waterfront home anywhere from Clearwater to Bradenton, your seawall has a band of crusty growth at the waterline. Most people call all of it barnacles. In reality you are usually looking at a mix of barnacles, oysters, algae and slime, and each one behaves a little differently.
 ## Barnacles
@@ -54,6 +63,9 @@ A professional cleaning removes all of it down through the tidal zone, then a ma
 "slug": "signs-seawall-failing",
 "title": "7 Warning Signs Your Seawall Needs Attention",
 "desc": "Cracks, sinkholes, leaning caps and more. The warning signs of seawall problems Tampa Bay waterfront homeowners should watch for, and why cleaning helps you see them.",
+"quick": "Most seawalls give warning signs before they fail, but marine growth often hides them. Watch for cracks, soil loss or sinkholes, a leaning wall, open joints, rust stains or spalling, water seeping through the face, and growth so thick the concrete is hidden. Cleaning the face and cap makes those signs visible.",
+"published": "",
+"modified": "",
 "img": "seawall.jpg", "links": ["seawall-cleaning", "maintenance-plans"],
 "body": """A seawall replacement is one of the most expensive repairs a waterfront homeowner can face. The good news is that most walls give warning signs long before they fail. The bad news is that marine growth often hides those signs. Here is what to watch for.
 ## 1. Cracks in the wall face or cap
@@ -81,6 +93,9 @@ Send us a quick video of your seawall at low tide. We will tell you what cleanin
 "slug": "are-piling-wraps-worth-it",
 "title": "Are Piling Wraps Worth It for Tampa Bay Docks?",
 "desc": "What piling wraps do, how they protect wood pilings from marine borers and rot, and when they make sense for waterfront homes in Pinellas, Hillsborough and Manatee.",
+"quick": "A piling wrap is a barrier around a wood piling in the tidal zone that blocks marine borers, slows rot and keeps barnacles and oysters off the wood. Wraps belong on pilings that are still sound, and they have to go on clean wood. A badly damaged piling may need repair or replacement first.",
+"published": "",
+"modified": "",
 "img": "after.jpg", "links": ["piling-wraps", "piling-cleaning"],
 "body": """Wood pilings hold up your dock and boat lift, and the tidal zone is where they take the most abuse. Piling wraps are one of the most common upgrades Tampa Bay homeowners ask us about. Here is how to decide if they make sense for you.
 ## What a piling wrap does
@@ -105,6 +120,9 @@ For most waterfront homes, cleaning and wrapping sound pilings is a small cost c
 "slug": "hurricane-prep-dock-seawall-checklist",
 "title": "Hurricane Season Dock and Seawall Prep Checklist for Tampa Bay",
 "desc": "A step by step hurricane prep checklist for docks, seawalls, pilings and boat lifts in Pinellas, Hillsborough and Manatee counties.",
+"quick": "Prepare the dock, seawall, pilings and boat lift in May or June, before Tampa Bay hurricane season. Clean and inspect, take dated photos of the clean structure, and fix loose boards and worn lift hardware before a storm is in the forecast. Those photos show the condition of the waterfront before any damage.",
+"published": "",
+"modified": "",
 "img": "lift.jpg", "links": ["maintenance-plans", "boat-lift-cleaning"],
 "body": """Tampa Bay waterfront homes have learned the hard way how much damage storm surge and wind can do to docks, lifts and seawalls. Good prep before the season starts protects your property and gives you a clear record of its condition for insurance.
 ## Before the season starts
@@ -128,6 +146,9 @@ Our maintenance plans include a pre season cleaning and photo report every year,
 "slug": "after-storm-dock-seawall-inspection",
 "title": "After the Storm: Dock and Seawall Checklist for Waterfront Homes",
 "desc": "What to check on your dock, seawall, pilings and boat lift after a hurricane or tropical storm in Tampa Bay, and how to stay safe while you do it.",
+"quick": "After a storm, keep dock power off and stay off boards that look loose, lifted or cracked. Check the dock, seawall and boat lift for missing boards, leaning pilings, new cracks, soil loss and damaged cables, and photograph the damage before any cleaning. Once that record is done, a post storm cleaning removes debris and growth so remaining problems are easier to see.",
+"published": "",
+"modified": "",
 "img": "seawall.jpg", "links": ["seawall-cleaning", "maintenance-plans"],
 "body": """After a storm passes, it is tempting to walk right out on the dock to see what happened. Take it slow. Surge and waves can loosen boards and undermine structures in ways that are not obvious at first glance.
 ## Safety first
@@ -157,6 +178,9 @@ Storms often stir up debris and leave fresh growth behind. Once your claims are 
 "slug": "barnacles-boat-lift-damage",
 "title": "How Barnacles Damage Your Boat Lift and Your Boat",
 "desc": "Marine growth on boat lifts wears out cables, scratches hulls and strains motors. Here is what Tampa Bay boat owners should know about lift maintenance.",
+"quick": "Barnacles and oysters on a boat lift add weight that wears the motor, gearbox and cables, and shells on bunks and guide posts can scratch gelcoat and tear bunk carpet. Growth also traps salt water against metal, so bolts and beams can corrode out of sight. Most lifts in Pinellas, Hillsborough and Manatee counties do well with cleaning every 6 to 12 months.",
+"published": "",
+"modified": "",
 "img": "lift.jpg", "links": ["boat-lift-cleaning", "piling-wraps"],
 "body": """A boat lift is supposed to protect your boat. When it is covered in barnacles and oysters, it can do the opposite. Tampa Bay water grows marine life fast, and lifts that sit lowered in the water collect it on every surface.
 ## Extra weight and strain
@@ -181,6 +205,9 @@ Most lifts in Pinellas, Hillsborough and Manatee counties do well with cleaning 
 "slug": "dock-ladder-safety",
 "title": "How to Make Your Dock Ladder Safe for Kids and Guests",
 "desc": "Barnacle covered dock ladders cause cuts and falls. Simple ways Tampa Bay waterfront families can keep ladders and swim areas safe.",
+"quick": "Barnacle shells on a dock ladder can cut hands and feet, and slimy rungs cause slips, especially for kids. Growth also hides loose mounts and corroded fasteners. Professional degrowth removes barnacles, oysters, algae and slime from the rungs, rails and brackets.",
+"published": "",
+"modified": "",
 "img": "ladder.jpg", "links": ["ladder-cleaning", "dock-cleaning"],
 "body": """For a lot of waterfront families, the dock ladder gets used more than anything else on the property. Kids swim off it, guests climb out of paddleboards on it and everyone uses it to get on and off the boat. When it is covered in barnacles and slime, it becomes a hazard.
 ## The problem with growth on ladders
@@ -203,6 +230,9 @@ Ladder cleaning takes little time and is easy to add to a dock, seawall or lift 
 "slug": "seawall-dock-cleaning-home-value",
 "title": "Selling a Waterfront Home? Clean the Dock and Seawall First",
 "desc": "Why a clean dock and seawall help waterfront homes in St. Petersburg, Tampa and Bradenton show better, inspect cleaner and sell with fewer surprises.",
+"quick": "A clean dock and seawall photograph better and let an inspector see the real condition instead of guessing under marine growth. Clean the boards, seawall face and cap, pilings, boat lift and ladders about one to two weeks before listing photos. That leaves time to fix small issues the cleaning reveals.",
+"published": "",
+"modified": "",
 "img": "dock.jpg", "links": ["seawall-cleaning", "dock-cleaning"],
 "body": """On a waterfront listing, the dock and seawall are part of what buyers are paying for. When they look neglected, buyers start wondering what else has been ignored. A professional cleaning before you list is one of the simplest ways to protect your price.
 ## First impressions from the water side
@@ -226,6 +256,9 @@ We work with homeowners and real estate agents across Pinellas, Hillsborough and
 "slug": "wood-vs-composite-dock-florida",
 "title": "Wood vs. Composite Docks: Maintenance in Florida Salt Water",
 "desc": "How wood and composite docks hold up in Tampa Bay salt water, what kind of cleaning each needs and how to keep either one looking good.",
+"quick": "Pressure treated wood, hardwood and composite boards all collect algae and mold in Florida salt water, and each needs a cleaning method matched to the material. Composite does not rot, but it still needs cleaning. Wood pilings and framing in the tidal zone still take the most damage from barnacles, oysters and marine borers.",
+"published": "",
+"modified": "",
 "img": "dock.jpg", "links": ["dock-cleaning", "piling-wraps"],
 "body": """Whether your dock is pressure treated pine, a tropical hardwood or composite boards, Florida salt water, sun and marine growth will work on it every day. Each material needs a slightly different approach.
 ## Pressure treated wood
@@ -245,6 +278,9 @@ We match the method to the material and clean both the walking surface and the s
 "slug": "marine-borers-dock-piling-rot",
 "title": "Marine Borers and Piling Rot: What Tampa Bay Homeowners Should Know",
 "desc": "How marine borers and rot weaken wood dock pilings in Tampa Bay, warning signs to look for and how cleaning and wraps help protect your dock.",
+"quick": "Marine borers are small organisms that tunnel into submerged wood and weaken dock pilings, mostly in the tidal zone and just below the low tide line. Thinning, soft spots, small holes or a piling that flexes are warning signs, and barnacles and oysters hide them. Cleaning the tidal zone and wrapping sound pilings helps protect the dock.",
+"published": "",
+"modified": "",
 "img": "before.jpg", "links": ["piling-wraps", "piling-cleaning"],
 "body": """Some of the most serious damage to a dock happens where you cannot easily see it. Wood pilings in salt and brackish water are attacked by marine borers and decay, mostly in the tidal zone and just below it.
 ## What are marine borers?
@@ -272,6 +308,9 @@ Text us a video of your pilings at low tide and we will tell you what we see."""
 "slug": "vacation-rental-seasonal-dock-maintenance",
 "title": "Dock and Seawall Care for Vacation Rentals and Seasonal Homes",
 "desc": "How vacation rental owners and seasonal residents on Anna Maria Island, St. Pete Beach and Tampa Bay keep docks safe and guest ready year round.",
+"quick": "A rental or seasonal dock in Tampa Bay can go months without a close look, which is enough time for slime, barnacles and storm debris to build up. Guests expect a clean, safe ladder and dock, and peak growth often happens while seasonal owners are away. A plan with scheduled cleanings, storm checks and photo reports keeps the waterfront guest ready.",
+"published": "",
+"modified": "",
 "img": "ladder.jpg", "links": ["maintenance-plans", "ladder-cleaning"],
 "body": """If you rent your waterfront home or only live in it part of the year, your dock may go months without anyone looking at it closely. In Tampa Bay, that is plenty of time for slime, barnacles and storm debris to take over.
 ## Why rentals need extra attention
@@ -294,6 +333,9 @@ We work directly with property managers on Anna Maria Island, Holmes Beach, St. 
 "slug": "canal-community-hoa-seawall-maintenance",
 "title": "Seawall Maintenance for Canal Communities and HOAs",
 "desc": "A guide for HOAs and canal neighborhoods in Apollo Beach, Ruskin, Shore Acres and Bradenton on keeping shared and private seawalls clean and inspected.",
+"quick": "Slow canal water in communities such as Apollo Beach, Ruskin, Shore Acres and Bradenton grows oysters, barnacles and algae quickly. An HOA plan can put seawall faces, caps and common docks on one schedule, with photos the board can use when planning repairs. Individual owners can add lifts and ladders.",
+"published": "",
+"modified": "",
 "img": "seawall.jpg", "links": ["seawall-cleaning", "maintenance-plans"],
 "body": """Canal communities are some of the best places to live on the water in Tampa Bay, and some of the hardest on seawalls. Lower water flow lets oysters and barnacles build up quickly, and one neglected wall can affect neighbors.
 ## Why canals grow so much
@@ -316,6 +358,9 @@ Send us a short video along the canal and the number of homes involved. We will 
 "slug": "buying-waterfront-home-dock-seawall-inspection",
 "title": "Buying a Waterfront Home? What to Check on the Dock and Seawall",
 "desc": "A buyer checklist for docks, seawalls, pilings and boat lifts on Tampa Bay waterfront homes, and why a cleaning can reveal what inspections miss.",
+"quick": "Buying a waterfront home in Pinellas, Hillsborough or Manatee county includes the dock, seawall and often a boat lift, and those structures can be expensive to repair. Check for cracks, leaning, soil loss, soft boards, thin pilings and worn lift cables. Barnacles and oysters can hide that damage, so a cleaning during the inspection period shows the true surface.",
+"published": "",
+"modified": "",
 "img": "after.jpg", "links": ["seawall-cleaning", "piling-cleaning"],
 "body": """When you buy a waterfront home in Pinellas, Hillsborough or Manatee county, you are also buying a dock, a seawall and maybe a boat lift. Those structures can be expensive to repair, so it pays to look closely before closing.
 ## Seawall checklist
@@ -344,6 +389,9 @@ Text us the property address and your inspection timeline and we will see what w
 "slug": "marine-growth-seasons-tampa-bay",
 "title": "Why Marine Growth Explodes in Summer in Tampa Bay",
 "desc": "How water temperature and seasons affect barnacle, oyster and algae growth on Tampa Bay docks and seawalls, and how to time your cleanings.",
+"quick": "Marine growth in Tampa Bay follows the seasons. Barnacle, oyster and algae growth picks up as the water warms in late spring and is fastest in summer, then slows in fall, with algae and mold still showing up on shaded docks in winter. Most homes do well with cleanings in late spring and fall.",
+"published": "",
+"modified": "",
 "img": "before.jpg", "links": ["maintenance-plans", "dock-cleaning"],
 "body": """Waterfront owners often notice that a dock cleaned in spring looks rough again by late summer. That is not your imagination. Marine growth in Tampa Bay follows the seasons.
 ## Warm water means fast growth
@@ -367,6 +415,9 @@ Text us a video of your waterfront and we will suggest the best timing for your 
 "slug": "diy-vs-professional-dock-cleaning",
 "title": "DIY vs. Professional Dock and Seawall Cleaning",
 "desc": "The real risks of DIY dock and seawall cleaning in Tampa Bay, from damaged boards and injuries to chemical runoff, and when to call a pro.",
+"quick": "Light algae on the walking surface is sometimes a homeowner job, but barnacles, oysters and seawalls are harder. Too much pressure can damage wood and composite, sharp shells and slick surfaces cause cuts and falls, and the tidal zone is difficult to reach safely. A professional cleaning covers pilings, ladders, lifts and the seawall with a method matched to each material.",
+"published": "",
+"modified": "",
 "img": "dock.jpg", "links": ["dock-cleaning", "seawall-cleaning"],
 "body": """Plenty of waterfront homeowners try to clean their own docks with a rented pressure washer and a scraper. Sometimes that works fine for light algae on the boards. For barnacles, oysters and seawalls, it often turns into a long, risky weekend.
 ## Common DIY problems

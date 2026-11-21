@@ -220,6 +220,18 @@ def crumbs(items):
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
 
+def render_schemas(schemas):
+    parts = []
+    for item in schemas:
+        if isinstance(item, tuple):
+            comment, obj = item
+            if comment:
+                parts.append(comment)
+            parts.append(ld(obj))
+        else:
+            parts.append(ld(item))
+    return "".join(parts)
+
 def faq_html(faqs):
     out = '<section class="faq"><h2>Frequently Asked Questions</h2>'
     for q, a in faqs:
@@ -235,7 +247,7 @@ def cta_block():
 <div class="cta-btns"><a class="btn red" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
 </div></section>"""
 
-def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
+def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_type="website", extra_head=""):
     canonical = url(fname)
     safe_title = html.escape(title, quote=True)
     safe_desc = html.escape(desc, quote=True)
@@ -254,7 +266,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="geo.region" content="US-FL">
 <meta name="geo.placename" content="Tampa Bay">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
 <meta property="og:site_name" content="{BIZ}">
 <meta property="og:title" content="{safe_title}">
 <meta property="og:description" content="{safe_desc}">
@@ -268,7 +280,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg"):
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
-{''.join(ld(s) for s in schemas)}
+{extra_head}{render_schemas(schemas)}
 </head>
 <body>
 <div class="topbar"><div class="wrap">Serving Pinellas, Hillsborough and Manatee Counties &nbsp;|&nbsp; <a href="tel:{PHONE_E164}">Call or Text {PHONE_DISPLAY}</a></div></div>
@@ -526,11 +538,21 @@ for i, p in enumerate(POSTS):
     nxt = [POSTS[(i + k) % len(POSTS)] for k in (1, 2, 3)]
     more = "".join(f'<li><a href="blog-{q["slug"]}.html">{q["title"]}</a></li>' for q in nxt)
     words = len(p["body"].split())
+    # TODO: set published and modified (YYYY-MM-DD) on the post when the real dates are known.
+    published = (p.get("published") or "").strip()
+    modified = (p.get("modified") or "").strip()
+    pub_label = published or "TODO"
+    mod_label = modified or "TODO"
+    quick = p.get("quick", "").strip()
+    if not quick:
+        raise SystemExit(f"missing quick answer for {p['slug']}")
     body = f"""
 <div class="wrap crumbs"><a href="index.html">Home</a> / <a href="blog.html">Blog</a> / <span>{p['title']}</span></div>
 <section class="wrap svc"><article class="svc-main post">
 <h1>{p['title']}</h1>
-<p class="meta">By {BIZ} &middot; Serving Pinellas, Hillsborough and Manatee Counties &middot; {max(2, words // 200)} min read</p>
+<p><b>Quick answer.</b> {html.escape(quick)}</p>
+<p class="meta">By Shea [TODO last name], Owner, {BIZ} &middot; Published: {html.escape(pub_label)} &middot; Updated: {html.escape(mod_label)} &middot; Serving Pinellas, Hillsborough and Manatee Counties &middot; {max(2, words // 200)} min read</p>
+<!-- TODO: replace Published and Updated with the real dates for this post. datePublished and dateModified must use those same dates. Both are unknown, so the schema fields are omitted rather than invented. -->
 <img class="svc-img" src="assets/{p['img']}" alt="{p['title']}" width="600" height="360">
 {md(p['body'])}
 <div class="inline-cta"><b>Free video inspection:</b> text a short video of your dock, seawall or lift to <a href="sms:{PHONE_E164}">{PHONE_DISPLAY}</a> for a same day recommendation and price.</div>
@@ -540,15 +562,28 @@ for i, p in enumerate(POSTS):
 <div class="box"><h3>Related Services</h3><ul>{related_svc}</ul></div>
 <div class="box"><h3>More Articles</h3><ul>{more}</ul></div></aside>
 </section>"""
-    art = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": p["title"], "description": p["desc"],
-           "image": SITE_URL + "/assets/" + p["img"], "datePublished": TODAY, "dateModified": TODAY,
-           "author": org_ref(), "publisher": org_ref(), "mainEntityOfPage": url(fn), "wordCount": words,
+    meta_title, meta_desc = BLOG_META[p["slug"]]
+    art = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": p["title"], "description": meta_desc,
+           "image": SITE_URL + "/assets/" + p["img"],
+           "author": {"@type": "Person", "name": "Shea [TODO last name]", "jobTitle": "Owner, Sea Dog Marine", "worksFor": org_ref()},
+           "publisher": org_ref(), "mainEntityOfPage": url(fn), "wordCount": words,
+           "articleSection": "Waterfront Maintenance",
            "about": ["waterfront home maintenance", "Tampa Bay"],
            "spatialCoverage": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"} for c in COUNTIES.values()]}
-    meta_title, meta_desc = BLOG_META[p["slug"]]
+    # Dates stay off the schema until they are real ISO dates. A TODO string would be invalid.
+    article_meta = ['<!-- TODO: add article:published_time and article:modified_time when real dates are set on this post. Do not invent dates. -->']
+    if published:
+        art["datePublished"] = published
+        article_meta.append(f'<meta property="article:published_time" content="{html.escape(published, quote=True)}">')
+    if modified:
+        art["dateModified"] = modified
+        article_meta.append(f'<meta property="article:modified_time" content="{html.escape(modified, quote=True)}">')
+    article_meta.append('<meta property="article:author" content="Shea [TODO last name]">')
+    article_meta.append('<meta property="article:section" content="Waterfront Maintenance">')
+    date_comment = "<!-- TODO: BlogPosting datePublished and dateModified omitted until real dates are known. -->" if not (published and modified) else ""
     pages[fn] = page(fn, meta_title, meta_desc, body,
-        [business_schema(), art, faq_schema(p["faqs"]), crumbs([("Home", "index.html"), ("Blog", "blog.html"), (p["title"], fn)])],
-        og_img="assets/" + p["img"])
+        [business_schema(), (date_comment, art), faq_schema(p["faqs"]), crumbs([("Home", "index.html"), ("Blog", "blog.html"), (p["title"], fn)])],
+        og_img="assets/" + p["img"], og_type="article", extra_head="\n".join(article_meta) + "\n")
 
 blog_cards = "".join(f"""<a class="card" href="blog-{p['slug']}.html"><img src="assets/{p['img']}" alt="{p['title']}" loading="lazy" width="560" height="360"><div><h3>{p['title']}</h3><p>{p['desc']}</p><span class="more">Read article</span></div></a>""" for p in POSTS)
 pages["blog.html"] = page("blog.html", "Tampa Bay Dock and Seawall Care Blog | Sea Dog Marine",
@@ -652,6 +687,19 @@ def assert_meta(pages):
             raise SystemExit(f"description mismatch on {fn}")
         titles.append(title)
         descs.append(desc)
+        if fn.startswith("blog-"):
+            if 'property="og:type" content="article"' not in doc:
+                raise SystemExit(f"blog og:type is not article on {fn}")
+            if "<b>Quick answer.</b>" not in doc:
+                raise SystemExit(f"missing quick answer on {fn}")
+            if 'property="article:author" content="Shea [TODO last name]"' not in doc:
+                raise SystemExit(f"missing article:author on {fn}")
+            if 'property="article:section" content="Waterfront Maintenance"' not in doc:
+                raise SystemExit(f"missing article:section on {fn}")
+            if '"@type": "Person"' not in doc or '"jobTitle": "Owner, Sea Dog Marine"' not in doc:
+                raise SystemExit(f"BlogPosting author is not the owner Person on {fn}")
+            if '"worksFor": {"@id": "' + SITE_URL + '/#business"}' not in doc:
+                raise SystemExit(f"author worksFor @id mismatch on {fn}")
     if len(set(titles)) != len(titles):
         raise SystemExit("duplicate title tags")
     if len(set(descs)) != len(descs):
