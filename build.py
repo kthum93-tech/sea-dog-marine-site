@@ -162,8 +162,9 @@ SERVICES = [
 ]
 
 # Dive services: in-water work done by a diver at the customer's dock or slip.
-# TODO for Shea: confirm dive certifications, pricing and recommended service intervals before adding any of them.
-# Do not invent certifications, prices or schedules. TODO: replace the reused images with real underwater job photos.
+# TODO for Shea: confirm dive certifications, pricing, anode brands stocked, and recommended
+# service intervals before publishing any of them. Do not invent certifications, prices, or schedules.
+# TODO: replace the reused images (lift.jpg, after.jpg, ladder.jpg) with real underwater job photos.
 DIVE_SERVICES = [
     {
         "slug": "hull-cleaning", "name": "Hull and Boat Bottom Cleaning", "img": "lift.jpg", "dive": True,
@@ -172,12 +173,22 @@ DIVE_SERVICES = [
         "card": "A diver cleans barnacles, slime and growth off your hull and running gear at your dock or slip.",
         "h1": "Hull and Boat Bottom Cleaning in Tampa Bay",
         "lead": "Barnacles, grass and slime on a boat bottom slow you down, burn more fuel and make the engine work harder. Sea Dog Marine sends a diver to your dock or slip to clean the hull in the water, so your boat stays put and you do not pay for a haul out just to clean the bottom.",
+        "what": "Hull and boat bottom cleaning is in-water work. A diver removes barnacles, slime and grass from the bottom while the boat stays at your dock, lift or slip. It is routine underwater care. It is not a haul out, and it is not a bottom paint job.",
+        "saltwater": "Tampa Bay stays warm most of the year, and the salt water in Pinellas, Hillsborough and Manatee counties grows barnacles and algae on a hull that sits still. Boats kept in canals and harbors often grow faster than boats that run often. Wiping growth off on a regular visit keeps hard shell from building into a layer that has to wait for a haul out. A cleaner bottom means less drag, so the boat moves more easily and the engine works less hard.",
+        "process": [
+            "Text 727-699-4920 with the boat length, a photo of the boat, and the dock, lift or slip where it sits.",
+            "We confirm the bottom can be cleaned in the water and send a price. The price depends on length and how much growth is on it.",
+            "A diver cleans the bottom, running gear, strainers and trim tabs at the boat.",
+            "Zinc anodes are checked on the same dive. Worn zincs can be replaced on that visit if you want that done.",
+            "You get notes on anything that looks damaged. Photos or video are available if you ask for them.",
+        ],
         "includes": ["Hull bottom cleaning in the water", "Barnacle, slime and grass removal", "Running gear, strainers and trim tabs", "Check of zinc anodes while we are down there", "Notes on anything that looks damaged", "Photos or video on request"],
         "why": "A clean bottom means better speed, better fuel economy and less strain on the engine. Regular cleaning also keeps hard growth from building up to the point where it takes a haul out to remove.",
         "faqs": [
             ("Do I need to haul my boat out for bottom cleaning?", "No. A diver cleans the hull in the water at your dock, lift or slip, so there is no haul out needed just to clean the bottom."),
             ("How often should a boat bottom be cleaned in Tampa Bay?", "It depends on your bottom paint, how often you run the boat and how fast growth comes back where it is kept. Text a photo or video and we will recommend a schedule for your boat."),
-            ("Can you check my zincs at the same time?", "Yes. We look at your zinc anodes during every hull cleaning and let you know when they need replacing."),
+            ("Can you check my zincs at the same time?", "Yes. We look at your zinc anodes during every hull cleaning and let you know when they need replacing. Zinc anode replacement can be added on the same dive."),
+            ("Will hull cleaning strip my bottom paint?", "The job is to remove growth, not to sand the paint off. Soft growth comes off with less work than hard barnacles. If the paint is already failing, we will tell you what we see. We do not repaint bottoms in the water."),
         ],
     },
     {
@@ -187,12 +198,21 @@ DIVE_SERVICES = [
         "card": "A diver replaces worn zinc anodes on shafts, props and trim tabs without a haul out.",
         "h1": "Zinc Anode Replacement in Tampa Bay",
         "lead": "Zinc anodes are sacrificial metal that corrodes so your props, shafts, outdrives and trim tabs do not. Once the zincs are worn away, salt water starts eating the parts that cost real money. Sea Dog Marine replaces worn zincs in the water at your dock or slip.",
+        "what": "A zinc anode is a small block of sacrificial metal bolted to a shaft, propeller, trim tab or outdrive. It is meant to corrode first, so the more expensive underwater metal is less likely to be eaten by galvanic corrosion. Replacement means a diver takes off the worn anode and installs a new one against a clean contact, while the boat stays in the water.",
+        "saltwater": "Salt water conducts the small electrical currents that drive galvanic corrosion. A boat that lives in Tampa Bay, whether it sits in a Pinellas harbor, a Hillsborough canal or a Manatee river slip, keeps metal in that water. The zinc gets smaller as it does its job. When it is mostly gone, shafts, props, trim tabs and outdrives are the parts that can start to pit. Changing the zinc at the dock is a small job compared with waiting on a haul out.",
+        "process": [
+            "Text 727-699-4920 with the boat type and where it is kept. A photo of the transom or drive helps.",
+            "A diver inspects the underwater zincs on the shaft, propeller, trim tabs and outdrive where they can be reached.",
+            "Worn anodes are replaced. The contact surface is cleaned before the new zinc goes on, so it can actually protect the metal.",
+            "You get a report of what was replaced. Anodes we cannot reach in the water are noted so you can plan a haul out for those.",
+        ],
         "includes": ["Inspection of all underwater zincs", "Replacement of worn shaft, prop and trim tab zincs", "Outdrive and engine leg anodes where reachable", "Clean contact surfaces before installing new zincs", "Report of what was replaced"],
         "why": "Galvanic corrosion works quietly under the waterline. Fresh zincs are cheap compared with replacing a prop, shaft or outdrive that corroded because the anodes ran out.",
         "faqs": [
             ("What do zinc anodes do on a boat?", "Zinc anodes are sacrificial. They corrode first so the more valuable underwater metal, like props, shafts, trim tabs and outdrives, is protected from galvanic corrosion."),
             ("How do I know when my zincs need replacing?", "Zincs wear down over time in salt water. We inspect them in the water and replace them when they are worn. Text a photo of your boat and we will set up a check."),
             ("Can zincs be replaced without hauling the boat?", "Yes. Most shaft, prop and trim tab zincs can be replaced by a diver in the water at your dock or slip."),
+            ("Can zinc replacement be done with a hull cleaning?", "Yes. We check zincs during hull and boat bottom cleaning and can replace the worn ones on the same dive."),
         ],
     },
     {
@@ -202,11 +222,21 @@ DIVE_SERVICES = [
         "card": "A diver removes barnacles and growth from props, shafts and struts so the boat runs smooth.",
         "h1": "Propeller and Running Gear Cleaning in Tampa Bay",
         "lead": "Even a thin layer of barnacles on a propeller can cost you speed and add vibration. Sea Dog Marine cleans props, shafts, struts and rudders in the water so your boat runs the way it should.",
+        "what": "Propeller cleaning is a diver removing barnacles and other hard growth from the blades. The same dive usually covers the shaft, strut and rudder. The boat stays in the water at your dock, lift or slip. This is cleaning, not propeller repair or balancing.",
+        "saltwater": "A propeller is a small surface that the engine depends on. In Tampa Bay salt water, barnacles settle on blades that sit still, on canal lifts in Hillsborough as much as on bay docks in Pinellas and Manatee. Even a light crust changes how the prop bites the water. Owners usually notice it as lost speed or a vibration that was not there before. Cleaning the prop is separate from cleaning the whole hull, and most boats have both done on one dive.",
+        "process": [
+            "Text a photo of the boat and where it is kept to 727-699-4920, along with the boat length.",
+            "The diver cleans the blades, then the shaft, strut and rudder.",
+            "Hard growth comes off. The diver looks for obvious dings or a bent blade and tells you what is visible. Bent blades need a prop shop, which is a different job.",
+            "Shaft and prop zincs are checked. Replacement is available on the same visit if they are worn.",
+            "The propeller can be cleaned on the same dive as the hull if you want both done.",
+        ],
         "includes": ["Propeller blade cleaning", "Shaft, strut and rudder cleaning", "Barnacle and hard growth removal", "Visual check for dings or damage", "Zinc check on the shaft and prop"],
         "why": "Props are precision parts. Growth on the blades hurts performance and fuel economy, and cleaning them is one of the fastest ways to get a sluggish boat running right again.",
         "faqs": [
             ("Why does my boat feel slow or vibrate?", "Barnacles and growth on the propeller and running gear are a common cause. Cleaning the prop often brings back lost speed and smooths out vibration."),
-            ("Can prop cleaning be added to a hull cleaning?", "Yes. Most customers have the prop and running gear cleaned on the same dive as the hull."),
+            ("Can prop cleaning be added to a hull cleaning?", "Yes. Most customers have the prop and running gear cleaned on the same dive as the hull and boat bottom cleaning."),
+            ("Do you repair bent propellers?", "No. We clean growth off the prop and tell you if a blade looks dinged or bent. Straightening, welding and balancing are a prop shop job, not an in-water cleaning."),
         ],
     },
 ]
@@ -241,6 +271,22 @@ def served_places(counties):
         for city in c["cities"]:
             areas.append({"@type": "City", "name": city + ", FL"})
     return areas
+
+def city_by_name(name):
+    for city in CITIES:
+        if city["name"] == name:
+            return city
+    return None
+
+def city_items(names):
+    out = ""
+    for name in names:
+        city = city_by_name(name)
+        if city:
+            out += f'<li><a href="{city["slug"]}.html">{html.escape(name)}</a></li>'
+        else:
+            out += f"<li>{html.escape(name)}</li>"
+    return out
 
 def real_text(value):
     value = (value or "").strip()
@@ -369,6 +415,8 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
     safe_desc = html.escape(desc, quote=True)
     svc_links = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in SERVICES)
     area_links = "".join(f'<li><a href="{c["slug"]}.html">{c["name"]}</a></li>' for c in COUNTIES.values())
+    area_links += '<li><a href="service-areas.html">All cities we serve</a></li>'
+    area_links += "".join(f'<li><a href="{c["slug"]}.html">{c["name"]}</a></li>' for c in CITIES)
     hours = "<br>".join(h[3] for h in HOURS)
     nav = "".join(f'<a href="{p}">{n}</a>' for n, p in NAV)
     return f"""<!DOCTYPE html>
@@ -413,12 +461,199 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
 <div><h3>{BIZ}</h3><p>Professional marine cleaning and maintenance for docks, seawalls, pilings, ladders and boat lifts across Tampa Bay.</p>
 <p><b>Phone:</b> <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> (call or text){'<br><b>Email:</b> <a href="mailto:'+EMAIL+'">'+EMAIL+'</a>' if EMAIL else ''}</p><p><b>Hours:</b><br>{hours}</p></div>
 <div><h3>Services</h3><ul>{svc_links}<li><a href="free-video-inspection.html">Free Video Inspection</a></li></ul></div>
-<div><h3>Service Areas</h3><ul>{area_links}<li><a href="service-areas.html">All cities we serve</a></li><li><a href="blog.html">Waterfront Maintenance Blog</a></li></ul></div>
+<div><h3>Service Areas</h3><ul>{area_links}<li><a href="blog.html">Waterfront Maintenance Blog</a></li></ul></div>
 </div><div class="wrap copy">&copy; {datetime.date.today().year} {BIZ}. All rights reserved.</div></footer>
 <a class="float" href="sms:{PHONE_E164}">Text for a Free Video Inspection</a>
 </body></html>"""
 
 # ------------------------------------------------------------------ pages
+# City pages. Copy is local waterfront context only: no stats, reviews, marina deals, prices, or names.
+# Titles are 50-60 characters. Descriptions are 140-155. Do not invent a street address.
+CITIES = [
+    {
+        "name": "St. Petersburg", "slug": "st-petersburg-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in St. Petersburg | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in St. Petersburg, FL. Barnacle and oyster removal on bay and canal docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "St. Petersburg waterfront sits on Tampa Bay, Boca Ciega Bay and a long run of saltwater canals. Warm bay water and tidal canals put barnacles, oysters and algae on docks, seawalls, pilings, ladders and boat lifts.",
+        "detail": "Canal lots and open bay lots both stay in salt water year round. Growth along the waterline hides the condition of a seawall cap and adds weight to pilings. Sea Dog Marine cleans those surfaces from the dock and from the water. A diver can also clean a hull, replace zincs or clean a propeller while the boat stays at the property.",
+        "nearby": ["St. Pete Beach", "Treasure Island", "Clearwater"],
+        "faqs": [
+            ("Do you clean canal seawalls in St. Petersburg?", "Yes. Canal docks and open bay docks in St. Petersburg get the same dock, seawall, piling, ladder and lift cleaning. Text a short video to 727-699-4920."),
+            ("Can you clean a hull at a St. Petersburg dock?", "Yes. A diver cleans the boat bottom, checks zincs and can clean the propeller in the water at the dock, lift or slip."),
+        ],
+    },
+    {
+        "name": "Clearwater", "slug": "clearwater-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in Clearwater, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Clearwater, FL. Barnacle removal on harbor and Intracoastal docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "Clearwater waterfront includes Clearwater Harbor, Island Estates and docks along the Intracoastal, with the Gulf just west of the beach. Harbor water and the Intracoastal both grow barnacles and slime on lifts, ladders and seawalls.",
+        "detail": "Harbor docks often sit in calmer water than the Gulf side, so shells and algae collect in a band at the waterline. Cleaning the dock, seawall and pilings shows the real condition of the structure. Hull, zinc and propeller work is done in the water at the dock or slip, so the boat does not have to be trailered for a routine cleaning.",
+        "nearby": ["Dunedin", "Largo", "Seminole"],
+        "faqs": [
+            ("Do you clean docks on Clearwater Harbor and the Intracoastal?", "Yes. We clean docks, seawalls, pilings, ladders and lifts on harbor and Intracoastal waterfront in Clearwater."),
+            ("Do I need to trailer the boat for a bottom cleaning in Clearwater?", "No. The diver comes to the dock, lift or slip. Text the boat length and a photo to 727-699-4920."),
+        ],
+    },
+    {
+        "name": "Tampa", "slug": "tampa-dock-seawall-cleaning", "county": "hillsborough",
+        "title": "Tampa Dock, Seawall and Hull Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Tampa, FL. Barnacle and oyster removal on bay, canal and river docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "Tampa waterfront runs from the Hillsborough River out to Hillsborough Bay and Old Tampa Bay, including bayfront homes and canal lots. Salt water and brackish river water both leave algae, barnacles and oysters on docks, seawalls and lifts.",
+        "detail": "River docks see more freshwater influence. Bay docks and canal docks sit in saltier water, where shell growth is usually heavier. Sea Dog Marine cleans the dock, seawall, pilings, ladder and boat lift, and can send a diver for the hull, zincs and propeller without a haul out.",
+        "nearby": ["Apollo Beach", "St. Petersburg", "Bradenton"],
+        "faqs": [
+            ("Do you work on river docks and bay docks in Tampa?", "Yes. Hillsborough River docks and docks on Hillsborough Bay or Old Tampa Bay are both in the service area. Shell growth is often heavier on the saltier bay and canal lots."),
+            ("How do I get a price in Tampa?", "Text a short video of the dock, seawall, lift or boat to 727-699-4920. We send a recommendation and a price, usually the same day."),
+        ],
+    },
+    {
+        "name": "Largo", "slug": "largo-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in Largo, Florida | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Largo, FL. Barnacle and oyster removal on canal and Intracoastal docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "Largo sits inland of the beach towns, and its saltwater docks are mostly on canals and the Intracoastal rather than the open Gulf. Still canal water lets barnacles and oysters settle on pilings, seawall caps and lift bunks.",
+        "detail": "Canal seawalls collect a band of shell at the waterline, and ladders get slick. Cleaning from the dock and the water keeps the work off the yard. The same property can add a diver for hull, zinc and propeller cleaning if the boat stays at the dock.",
+        "nearby": ["Seminole", "Clearwater", "Dunedin"],
+        "faqs": [
+            ("Does Largo have saltwater docks you can clean?", "Yes. We clean canal and Intracoastal docks and seawalls in Largo, where quiet salt water grows barnacles and oysters."),
+            ("Can a diver clean the boat at a Largo dock?", "Yes, when the boat is in the water at the dock, lift or slip. Text 727-699-4920 with the boat length and a photo."),
+        ],
+    },
+    {
+        "name": "Seminole", "slug": "seminole-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in Seminole, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Seminole, FL. Barnacle removal on Boca Ciega Bay and canal docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "Seminole has saltwater docks along Boca Ciega Bay and the canals that connect toward the Intracoastal, plus homes on Lake Seminole. Barnacles and oysters attach on the saltwater docks and seawalls. The lake is a separate freshwater shoreline.",
+        "detail": "Bay and canal pilings grow the same shell band seen across Pinellas. Sea Dog Marine cleans docks, seawalls, pilings, ladders and lifts on that saltwater shoreline, and a diver handles hull, zinc and propeller work at the dock. If a video shows the lake instead of the bay, we will say so, because freshwater growth is a different job from barnacles and oysters.",
+        "nearby": ["Largo", "St. Petersburg", "Madeira Beach"],
+        "faqs": [
+            ("Do you clean Boca Ciega Bay docks in Seminole?", "Yes. Saltwater docks and seawalls on the bay and the connecting canals are the marine cleaning work. Lake Seminole is freshwater, and the video shows us which shoreline you have."),
+            ("What should I send for a Seminole quote?", "Text a short video or a few photos of the dock, seawall or boat to 727-699-4920."),
+        ],
+    },
+    {
+        "name": "Dunedin", "slug": "dunedin-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dunedin Dock and Seawall Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Dunedin, FL. Barnacle removal on St. Joseph Sound docks and seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "Dunedin waterfront faces St. Joseph Sound, with docks and seawalls along the Intracoastal and the shoreline near the causeway to Honeymoon Island. The sound is shallow salt water, and barnacles and algae grow readily on anything that stays wet.",
+        "detail": "Sound-side docks and seawalls pick up growth through the tidal band. Lift bunks and ladders get the same coating. Cleaning on a schedule keeps the walking surfaces usable and lets you see the wood and concrete underneath. Hull cleaning, zinc replacement and propeller cleaning are done in the water at the dock.",
+        "nearby": ["Clearwater", "Tarpon Springs", "Largo"],
+        "faqs": [
+            ("Do you clean docks on St. Joseph Sound?", "Yes. Dunedin docks and seawalls on the sound and the Intracoastal are part of the Pinellas service area."),
+            ("Can zincs be replaced at a Dunedin dock?", "Yes. A diver can inspect and replace reachable underwater zincs without a haul out. Text 727-699-4920 to set it up."),
+        ],
+    },
+    {
+        "name": "Tarpon Springs", "slug": "tarpon-springs-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in Tarpon Springs | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Tarpon Springs, FL. Barnacle removal on Anclote River and bayou docks. Text 727-699-4920 for a free video inspection.",
+        "intro": "Tarpon Springs waterfront includes the Anclote River, the bayous and docks that open toward the Gulf. River and bayou water is salt and brackish, and hard growth still settles on pilings, seawalls and lift hardware.",
+        "detail": "Residential docks along the river and the bayous see the same saltwater growth as the rest of northern Pinellas. Boats kept there grow slime and barnacles on the hull and propeller as well as on the dock. Sea Dog Marine cleans the dock, seawall, pilings, ladder and lift, and a diver can clean the bottom, swap worn zincs and clean the prop at the slip.",
+        "nearby": ["Dunedin", "Clearwater"],
+        "faqs": [
+            ("Do you clean Anclote River docks?", "Yes. River and bayou docks and seawalls in Tarpon Springs are served, along with the rest of northern Pinellas."),
+            ("Will you clean a propeller in Tarpon Springs?", "Yes. Propeller and running gear cleaning is done in the water at the dock or slip. Call or text 727-699-4920."),
+        ],
+    },
+    {
+        "name": "Treasure Island", "slug": "treasure-island-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Treasure Island Dock and Seawall Cleaning | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Treasure Island, FL. Barnacle removal on bay-side docks and seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "Treasure Island is a barrier island with the Gulf on the west and Boca Ciega Bay and the Intracoastal on the east. Most private docks and seawalls are on the bay side, where calmer salt water grows barnacles and oysters on pilings and caps.",
+        "detail": "Bay-side lifts and ladders pick up shell because the water is warm and sheltered. John's Pass, the inlet at the south end, sits between Treasure Island and Madeira Beach. Cleaning usually covers the dock, seawall, pilings and ladder. A diver can clean the hull and propeller and check zincs while the boat is at the dock.",
+        "nearby": ["St. Pete Beach", "Madeira Beach", "St. Petersburg"],
+        "faqs": [
+            ("Which side of Treasure Island do you clean?", "Private docks and seawalls are mostly on the bay and Intracoastal side, and that is the usual job. Text a video if the access looks different."),
+            ("Do you clean ladders and lifts on Treasure Island?", "Yes. Ladder, lift, dock, seawall and piling cleaning are all available, plus in-water hull work. Text 727-699-4920."),
+        ],
+    },
+    {
+        "name": "St. Pete Beach", "slug": "st-pete-beach-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Dock and Seawall Cleaning in St. Pete Beach | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in St. Pete Beach, FL. Barnacle removal on Intracoastal docks and seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "St. Pete Beach is a barrier island between the Gulf and Boca Ciega Bay. Docks and seawalls line the bay and the Intracoastal, including narrower canals and the Pass-a-Grille shoreline at the south end.",
+        "detail": "Beach-town docks here include year round homes and places that sit between visits, so growth can get ahead of the owner. Sea Dog Marine cleans docks, seawalls, pilings, ladders and lifts, and can put the property on a maintenance schedule. Hull, zinc and propeller work is done in the water, so the boat does not have to leave the dock for a routine bottom cleaning.",
+        "nearby": ["Treasure Island", "St. Petersburg", "Madeira Beach"],
+        "faqs": [
+            ("Do you clean Intracoastal docks in St. Pete Beach?", "Yes, including bay-side docks and seawalls down toward Pass-a-Grille. Text a video of the dock or wall to 727-699-4920."),
+            ("Can a seasonal home in St. Pete Beach be put on a schedule?", "Yes. Maintenance plans set the cleaning visits so the dock is not left to grow between stays. The plan is built around that property."),
+        ],
+    },
+    {
+        "name": "Madeira Beach", "slug": "madeira-beach-dock-seawall-cleaning", "county": "pinellas",
+        "title": "Madeira Beach Dock and Seawall Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Madeira Beach, FL. Barnacle removal on Intracoastal docks near John's Pass. Text 727-699-4920 for a free inspection.",
+        "intro": "Madeira Beach sits on the Intracoastal, with John's Pass at the north end and Boca Ciega Bay behind the Gulf beach. Residential docks and seawalls on the bay side carry barnacles, oysters and algae through the tidal zone.",
+        "detail": "Water near the pass moves, but pilings and seawall caps still hold a shell band. Ladders and lift bunks get slick and sharp. Sea Dog Marine cleans those surfaces and can send a diver for the hull, zinc anodes and propeller at the same dock.",
+        "nearby": ["Treasure Island", "St. Pete Beach", "Seminole"],
+        "faqs": [
+            ("Do you clean docks near John's Pass?", "Yes. Madeira Beach docks and seawalls on the Intracoastal and Boca Ciega Bay are in the service area, including properties near the pass."),
+            ("Can the hull and propeller be cleaned on the same visit in Madeira Beach?", "Yes. Most boats have the propeller cleaned on the same dive as the hull. Text 727-699-4920 with the boat length."),
+        ],
+    },
+    {
+        "name": "Apollo Beach", "slug": "apollo-beach-dock-seawall-cleaning", "county": "hillsborough",
+        "title": "Apollo Beach Dock and Seawall Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Apollo Beach, FL. Oyster and barnacle removal on canal seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "Apollo Beach is a canal community on Tampa Bay in southern Hillsborough County. The canals are salt water with limited flow, and oyster buildup on seawalls and lift cradles is a regular sight on this shoreline.",
+        "detail": "Oysters on a seawall cap and barnacles on lift bunks are the usual find. Cleaning the wall, dock, pilings and ladder shows the concrete and hardware again. Boats kept on canal lifts grow a bottom and a dirty propeller in the same water, and a diver can handle that at the dock.",
+        "nearby": ["Tampa", "Bradenton"],
+        "faqs": [
+            ("Do you remove oysters from Apollo Beach canal seawalls?", "Yes. Canal seawalls and lift cradles in Apollo Beach are a common oyster and barnacle cleaning job."),
+            ("How do I start an Apollo Beach quote?", "Text a video of the seawall, dock or lift to 727-699-4920. Include the nearest cross street or community name if you have it."),
+        ],
+    },
+    {
+        "name": "Bradenton", "slug": "bradenton-dock-seawall-cleaning", "county": "manatee",
+        "title": "Dock and Seawall Cleaning in Bradenton, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Bradenton, FL. Barnacle and oyster removal on the river and Palma Sola Bay. Text 727-699-4920 for a free inspection.",
+        "intro": "Bradenton waterfront includes the Manatee River, the Braden River and Palma Sola Bay out toward the island. River docks and bay docks both sit in warm water that puts barnacles, oysters and algae on pilings and seawalls.",
+        "detail": "River lots and bayfront lots do not grow at the same speed, but both need the waterline cleaned so the structure can be seen. Sea Dog Marine covers docks, seawalls, pilings, ladders and boat lifts in Bradenton, plus in-water hull, zinc and propeller work at the dock.",
+        "nearby": ["Palmetto", "Anna Maria Island", "Apollo Beach"],
+        "faqs": [
+            ("Do you clean Manatee River docks and Palma Sola Bay docks?", "Yes. Both are in Bradenton, and both are in the Manatee County service area. Text 727-699-4920 with a short video."),
+            ("Can you clean a boat bottom in Bradenton without a haul out?", "Yes. A diver works at the dock, lift or slip and can clean the hull, check zincs and clean the propeller."),
+        ],
+    },
+    {
+        "name": "Palmetto", "slug": "palmetto-dock-seawall-cleaning", "county": "manatee",
+        "title": "Palmetto Dock and Seawall Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning in Palmetto, FL. Barnacle removal on Manatee River docks and seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "Palmetto faces Bradenton across the Manatee River, with riverfront docks and seawalls and more shoreline toward Terra Ceia Bay to the north. Tidal river water carries barnacles and algae onto pilings, ladders and lift beams.",
+        "detail": "A river seawall hides cracks under oysters the same way a bay wall does. Cleaning the face and cap, the dock and the pilings is how you see the real condition. Hull cleaning and zinc replacement are available in the water for boats kept at these docks.",
+        "nearby": ["Bradenton", "Anna Maria Island"],
+        "faqs": [
+            ("Do you clean Palmetto docks on the Manatee River?", "Yes. River docks and seawalls in Palmetto are part of the Manatee County service area, including waterfront toward Terra Ceia Bay."),
+            ("Can a diver replace zincs at a Palmetto dock?", "Yes. Reachable shaft, prop and trim tab zincs can be replaced in the water. Text 727-699-4920 with the boat type and where it is kept."),
+        ],
+    },
+    {
+        "name": "Anna Maria Island", "slug": "anna-maria-island-dock-seawall-cleaning", "county": "manatee",
+        "title": "Anna Maria Island Dock and Seawall Cleaning | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning on Anna Maria Island, FL. Barnacle removal on bay-side docks and seawalls. Text 727-699-4920 for a free video inspection.",
+        "intro": "Anna Maria Island is the barrier island at the mouth of Tampa Bay, with Anna Maria, Holmes Beach and Bradenton Beach along it. The Gulf is on the west. Private docks and seawalls are mostly on the bay side, along Anna Maria Sound and the canals.",
+        "detail": "Bay-side pilings and seawalls take barnacles and oysters. Homes that are empty between visits can go a long stretch with nobody looking at the ladder or the lift. Sea Dog Marine cleans the dock, seawall, pilings, ladder and lift, and a diver can clean the hull and propeller and replace zincs without taking the boat off the island.",
+        "nearby": ["Bradenton", "Longboat Key", "Palmetto"],
+        "faqs": [
+            ("Do you clean bay-side docks on Anna Maria Island?", "Yes. Docks and seawalls on Anna Maria Sound and the island canals are served, in Anna Maria, Holmes Beach and Bradenton Beach."),
+            ("Do I have to bring the boat to the mainland for a bottom cleaning?", "No. The diver comes to the dock, lift or slip on the island. Call or text 727-699-4920."),
+        ],
+    },
+    {
+        "name": "Longboat Key", "slug": "longboat-key-dock-seawall-cleaning", "county": "manatee",
+        "title": "Longboat Key Dock and Seawall Cleaning, FL | Sea Dog Marine",
+        "desc": "Dock, seawall and hull cleaning on Longboat Key in Manatee County, FL. Barnacle removal on bay docks and seawalls. Text 727-699-4920 for a free inspection.",
+        "intro": "Longboat Key is a barrier island south of Anna Maria, and the town continues into Sarasota County. Sea Dog Marine serves the Manatee County waterfront on the key, where docks face Sarasota Bay and the passes rather than the Gulf.",
+        "detail": "Those bay docks and seawalls grow barnacles and oysters in the tidal band, and lift bunks pick up shell that can scratch a hull. Cleaning covers the dock, seawall, pilings, ladder and boat lift. A diver cleans the hull and propeller and replaces zincs in the water at the dock. The Sarasota County end of the key is outside this service area.",
+        "nearby": ["Anna Maria Island", "Bradenton"],
+        "faqs": [
+            ("Do you serve all of Longboat Key?", "Sea Dog Marine serves Longboat Key waterfront in Manatee County. The key continues into Sarasota County, which is outside this service area."),
+            ("What shows up on Longboat Key bay docks?", "Barnacles, oysters and algae on docks, seawalls, pilings and lifts. A diver also cleans hulls and propellers in the water. Text 727-699-4920 for a look at your dock."),
+        ],
+    },
+]
+
+
+
 pages = {}
 
 # Home
@@ -468,16 +703,37 @@ pages["index.html"] = page("index.html",
 for s in SERVICES:
     others = "".join(f'<li><a href="{o["slug"]}.html">{o["name"]}</a></li>' for o in SERVICES if o is not s)
     areas = "".join(f'<li><a href="{c["slug"]}.html">{s["name"]} in {c["name"]}</a><br><small>{", ".join(c["cities"][:5])}</small></li>' for c in COUNTIES.values())
+    if s.get("dive"):
+        process = "".join(f"<li>{step}</li>" for step in s["process"])
+        related = "".join(f'<li><a href="{o["slug"]}.html">{o["name"]}</a></li>' for o in DIVE_SERVICES if o is not s)
+        related += '<li><a href="dive-services.html">All dive services</a></li><li><a href="boat-lift-cleaning.html">Boat lift cleaning</a></li><li><a href="service-areas.html">Service areas</a></li><li><a href="free-video-inspection.html">Free video inspection</a></li>'
+        city_links = "".join(f'<li><a href="{c["slug"]}.html">{s["name"]} in {c["name"]}</a></li>' for c in CITIES)
+        crumb = f'<div class="wrap crumbs"><a href="index.html">Home</a> / <a href="dive-services.html">Dive Services</a> / <span>{s["name"]}</span></div>'
+        crumb_ld = [("Home", "index.html"), ("Dive Services", "dive-services.html"), (s["name"], s["slug"] + ".html")]
+        middle = f"""
+<h2>What it is</h2><p>{s['what']}</p>
+<h2>Why it matters in Tampa Bay saltwater</h2><p>{s['saltwater']}</p>
+<h2>The process</h2><ol>{process}</ol>
+<h2>What is included</h2><ul class="checks col">{''.join('<li>'+i+'</li>' for i in s['includes'])}</ul>
+<p>{s['why']}</p>
+<h2>Related services</h2><ul class="arealist">{related}</ul>
+<h2>Where we provide {s['name'].lower()}</h2><ul class="arealist">{areas}</ul>
+<h2>City pages</h2><ul class="arealist">{city_links}</ul>"""
+    else:
+        crumb = f'<div class="wrap crumbs"><a href="index.html">Home</a> / <span>{s["name"]}</span></div>'
+        crumb_ld = [("Home", "index.html"), (s["name"], s["slug"] + ".html")]
+        middle = f"""
+<h2>What is included</h2><ul class="checks col">{''.join('<li>'+i+'</li>' for i in s['includes'])}</ul>
+<h2>Why it matters</h2><p>{s['why']}</p>
+<h2>Where we provide {s['name'].lower()}</h2><ul class="arealist">{areas}</ul>"""
     body = f"""
-<div class="wrap crumbs"><a href="index.html">Home</a> / <span>{s['name']}</span></div>
+{crumb}
 <section class="wrap svc">
 <div class="svc-main">
 <h1>{s['h1']}</h1>
 <p class="lead">{s['lead']}</p>
 <img class="svc-img" src="assets/{s['img']}" alt="{s['name']} by {BIZ} in Tampa Bay, Florida" width="600" height="360">
-<h2>What is included</h2><ul class="checks col">{''.join('<li>'+i+'</li>' for i in s['includes'])}</ul>
-<h2>Why it matters</h2><p>{s['why']}</p>
-<h2>Where we provide {s['name'].lower()}</h2><ul class="arealist">{areas}</ul>
+{middle}
 {faq_html(s['faqs'])}
 </div>
 <aside class="side"><div class="box"><h3>Get a Free Video Inspection</h3><p>Text a video or photos and get a price fast.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
@@ -488,7 +744,7 @@ for s in SERVICES:
                   "description": s["desc"], "provider": org_ref(), "url": url(s["slug"] + ".html"),
                   "areaServed": served_places(COUNTIES.values())}
     pages[s["slug"] + ".html"] = page(s["slug"] + ".html", s["title"], s["desc"], body,
-        [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", service_ld), faq_schema(s["faqs"]), crumbs([("Home", "index.html"), (s["name"], s["slug"] + ".html")])],
+        [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", service_ld), faq_schema(s["faqs"]), crumbs(crumb_ld)],
         og_img="assets/" + s["img"])
 
 # County pages. Titles and descriptions are hand-counted to 50-60 and 140-155 characters.
@@ -508,7 +764,7 @@ COUNTY_META = {
 }
 
 for key, c in COUNTIES.items():
-    city_list = "".join(f"<li>{x}</li>" for x in c["cities"])
+    city_list = city_items(c["cities"])
     svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in DOCK_SERVICES)
     dive_svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in DIVE_SERVICES)
     faqs = [
@@ -545,14 +801,55 @@ hub = "".join(
 <p>{c['intro']}</p>
 <p>{c['local']}</p>
 <p><a href="{c['slug']}.html">Dock, seawall and piling cleaning in {c['name']}</a>. Cities and communities we serve there:</p>
-<ul class="cities">{''.join('<li>'+x+'</li>' for x in c['cities'])}</ul></div>"""
+<ul class="cities">{city_items(c['cities'])}</ul></div>"""
     for c in COUNTIES.values()
 )
 pages["service-areas.html"] = page("service-areas.html", "Tampa Bay Dock Cleaning Service Areas | Sea Dog Marine",
     "Dock and seawall cleaning service areas across Pinellas, Hillsborough and Manatee counties. Barnacle and oyster removal. Text for a free video inspection.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Service Areas</span></div>
-<section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder and boat lift cleaning for waterfront properties across Pinellas, Hillsborough and Manatee counties. Pick a county below for the cities we serve and the same marine cleaning services.</p><div class="areas">{hub}</div></section>""",
+<section class="wrap"><h1>Tampa Bay Service Areas</h1><p class="lead">{BIZ} provides dock, seawall, piling, ladder, boat lift and hull cleaning for waterfront properties across Pinellas, Hillsborough and Manatee counties. Pick a county below, or open a city page for dock, seawall and hull cleaning in that city. Call or text {PHONE_DISPLAY}.</p><div class="areas">{hub}</div></section>""",
     [business_ld(), crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html")])])
+
+# City pages. Each intro is written for that waterfront. H1s follow one pattern on purpose.
+for city in CITIES:
+    county = COUNTIES[city["county"]]
+    svcs = "".join(f'<li><a href="{s["slug"]}.html">{s["name"]}</a></li>' for s in SERVICES)
+    nearby = "".join(
+        f'<li><a href="{city_by_name(name)["slug"]}.html">{html.escape(name)}</a></li>'
+        for name in city["nearby"]
+    )
+    body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> / <a href="service-areas.html">Service Areas</a> / <a href="{county['slug']}.html">{county['name']}</a> / <span>{html.escape(city['name'])}</span></div>
+<section class="wrap svc"><div class="svc-main">
+<h1>Dock, Seawall and Hull Cleaning in {html.escape(city['name'])}, FL</h1>
+<p class="lead">{city['intro']}</p>
+<p>{city['detail']}</p>
+<p>Call or text <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> and we will look at a short video of the dock, seawall or boat. You can also <a href="free-video-inspection.html">send a free video inspection</a>.</p>
+<h2>Services in {html.escape(city['name'])}</h2>
+<ul class="checks col">{svcs}</ul>
+<h2>Nearby areas</h2>
+<ul class="arealist">{nearby}<li><a href="{county['slug']}.html">Dock and seawall cleaning in {county['name']}</a></li><li><a href="service-areas.html">All service areas</a></li></ul>
+{faq_html(city['faqs'])}
+</div>
+<aside class="side"><div class="box"><h3>Free Video Inspection</h3><p>Serving {html.escape(city['name'])}. Call or text {PHONE_DISPLAY}.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div></aside>
+</section>"""
+    area_served = [
+        {"@type": "City", "name": city["name"] + ", FL"},
+        {"@type": "AdministrativeArea", "name": county["name"] + ", FL"},
+    ]
+    service_ld = {
+        "@context": "https://schema.org", "@type": "Service",
+        "name": f"Dock, seawall and hull cleaning in {city['name']}",
+        "serviceType": "Dock, seawall, piling and hull cleaning",
+        "description": city["desc"], "provider": org_ref(), "url": url(city["slug"] + ".html"),
+        "areaServed": area_served,
+    }
+    pages[city["slug"] + ".html"] = page(
+        city["slug"] + ".html", city["title"], city["desc"], body,
+        [business_ld(), ("<!-- TODO: Service.offers omitted until real prices are provided. Do not invent prices. -->", service_ld),
+         faq_schema(city["faqs"]),
+         crumbs([("Home", "index.html"), ("Service Areas", "service-areas.html"), (county["name"], county["slug"] + ".html"), (city["name"], city["slug"] + ".html")])],
+    )
 
 # Free inspection / contact
 insp_faq = [FAQ_HOME[2], FAQ_HOME[3]]
@@ -778,7 +1075,8 @@ not_found = page(
     "That page is not on the Sea Dog Marine site. Call or text 727-699-4920 for dock and seawall cleaning in Pinellas, Hillsborough and Manatee counties.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Page not found</span></div>
 <section class="wrap"><h1>Page not found</h1>
-<p class="lead">That page is not on the {BIZ} site. Go back to the home page, or call or text {PHONE_DISPLAY} for dock, seawall, piling, ladder and boat lift cleaning in Pinellas, Hillsborough and Manatee counties.</p>
+<p class="lead">That page is not on the {BIZ} site. Go back to the home page, or call or text {PHONE_DISPLAY} for dock, seawall, piling, ladder, boat lift and hull cleaning in Pinellas, Hillsborough and Manatee counties.</p>
+<ul class="checks col"><li><a href="index.html">Home</a></li><li><a href="dock-cleaning.html">Dock cleaning</a></li><li><a href="seawall-cleaning.html">Seawall cleaning</a></li><li><a href="hull-cleaning.html">Hull and boat bottom cleaning</a></li><li><a href="dive-services.html">Dive services</a></li><li><a href="service-areas.html">Service areas</a></li><li><a href="free-video-inspection.html">Free video inspection</a></li></ul>
 <p><a class="btn red" href="index.html">Back to home</a></p>
 </section>""",
     [],
@@ -860,7 +1158,7 @@ llms = f"""# {BIZ}
 """ + "\n".join(llms_link(s["slug"] + ".html") for s in SERVICES) + "\n" + llms_link("dive-services.html") + """
 
 ## Service areas
-""" + "\n".join(llms_link(c["slug"] + ".html") for c in COUNTIES.values()) + "\n" + llms_link("service-areas.html") + f"""
+""" + "\n".join(llms_link(c["slug"] + ".html") for c in COUNTIES.values()) + "\n" + llms_link("service-areas.html") + "\n" + "\n".join(llms_link(c["slug"] + ".html") for c in CITIES) + f"""
 
 ## Contact
 """ + llms_link("free-video-inspection.html") + """
@@ -877,6 +1175,11 @@ for s in SERVICES:
 for c in COUNTIES.values():
     if url(c["slug"] + ".html") not in llms:
         raise SystemExit(f"llms.txt missing {c['slug']}")
+for city in CITIES:
+    if url(city["slug"] + ".html") not in llms:
+        raise SystemExit(f"llms.txt missing {city['slug']}")
+    if city["intro"] in [other["intro"] for other in CITIES if other is not city]:
+        raise SystemExit(f"duplicate city intro for {city['name']}")
 for p in POSTS:
     if url("blog-" + p["slug"] + ".html") not in llms:
         raise SystemExit(f"llms.txt missing {p['slug']}")
@@ -930,6 +1233,7 @@ def assert_schema(pages):
     import re
     service_pages = {s["slug"] + ".html": s for s in SERVICES}
     county_pages = {c["slug"] + ".html": (key, c) for key, c in COUNTIES.items()}
+    city_pages = {c["slug"] + ".html": c for c in CITIES}
     seen_business = False
     for fn, doc in pages.items():
         for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>', doc):
@@ -980,6 +1284,12 @@ def assert_schema(pages):
                     for other in COUNTIES.values():
                         if other["name"] != county["name"] and other["name"] + ", FL" in names:
                             raise SystemExit(f"{fn} includes another county")
+                if fn in city_pages:
+                    city = city_pages[fn]
+                    county_name = COUNTIES[city["county"]]["name"] + ", FL"
+                    expected = {city["name"] + ", FL", county_name}
+                    if set(names) != expected:
+                        raise SystemExit(f"{fn} areaServed should be the city and its county, got {names}")
             def walk(obj):
                 if isinstance(obj, dict):
                     ref = obj.get("@id")
@@ -1007,4 +1317,26 @@ if "application/ld+json" in not_found_html:
     raise SystemExit("404 must not repeat homepage schema")
 if "404.html" in open(f"{OUT}/sitemap.xml").read():
     raise SystemExit("404 must stay out of the sitemap")
+for city in CITIES:
+    doc = pages[city["slug"] + ".html"]
+    h1 = f"Dock, Seawall and Hull Cleaning in {city['name']}, FL"
+    if f"<h1>{h1}</h1>" not in doc:
+        raise SystemExit(f"missing H1 on {city['slug']}")
+    if PHONE_DISPLAY not in doc:
+        raise SystemExit(f"missing phone on {city['slug']}")
+    if f'href="{city["slug"]}.html"' not in pages["service-areas.html"]:
+        raise SystemExit(f"hub missing {city['name']}")
+    if f'href="{city["slug"]}.html"' not in pages["index.html"]:
+        raise SystemExit(f"footer missing {city['name']}")
+    if url(city["slug"] + ".html") not in open(f"{OUT}/sitemap.xml").read():
+        raise SystemExit(f"sitemap missing {city['slug']}")
+for s in DIVE_SERVICES:
+    doc = pages[s["slug"] + ".html"]
+    for heading in ("What it is", "Why it matters in Tampa Bay saltwater", "The process"):
+        if f"<h2>{heading}</h2>" not in doc:
+            raise SystemExit(f"{s['slug']} missing {heading}")
+    if '"@type": "FAQPage"' not in doc or '"@type": "Service"' not in doc:
+        raise SystemExit(f"{s['slug']} missing FAQ or Service schema")
+    if 'href="dive-services.html"' not in pages["index.html"]:
+        raise SystemExit("homepage nav missing dive services")
 print("Built", len(pages), "pages")
