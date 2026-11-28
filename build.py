@@ -339,7 +339,7 @@ def business_schema():
             d["geo"] = {"@type": "GeoCoordinates", "latitude": lat, "longitude": lng}
     d["founder"] = {
         "@type": "Person",
-        "name": "Shea [TODO last name]",
+        "name": "Shea Ganison",
         "jobTitle": "Owner, Sea Dog Marine",
         "worksFor": org_ref(),
     }
@@ -364,8 +364,7 @@ def local_todo_comment():
         "<!-- TODO for Kyle/Shea: LocalBusiness fields below are omitted so the JSON-LD stays valid. "
         "Fill the real values in the CONFIG block of build.py. Do not guess coordinates, URLs, a city or a ZIP.\n"
         + lines
-        + "\nFounder name is \"Shea [TODO last name]\" until a real last name is provided.\n"
-        + "Do not add aggregateRating or review without real review data. -->"
+        + "\nDo not add aggregateRating or review without real review data. -->"
     )
 
 def business_ld():
@@ -1003,7 +1002,7 @@ for i, p in enumerate(POSTS):
 <section class="wrap svc"><article class="svc-main post">
 <h1>{p['title']}</h1>
 <p><b>Quick answer.</b> {html.escape(quick)}</p>
-<p class="meta">By Shea [TODO last name], Owner, {BIZ} &middot; Published: {html.escape(pub_label)} &middot; Updated: {html.escape(mod_label)} &middot; Serving Pinellas, Hillsborough and Manatee Counties &middot; {max(2, words // 200)} min read</p>
+<p class="meta">By Shea Ganison, Owner, {BIZ} &middot; Published: {html.escape(pub_label)} &middot; Updated: {html.escape(mod_label)} &middot; Serving Pinellas, Hillsborough and Manatee Counties &middot; {max(2, words // 200)} min read</p>
 <!-- TODO: replace Published and Updated with the real dates for this post. datePublished and dateModified must use those same dates. Both are unknown, so the schema fields are omitted rather than invented. -->
 <img class="svc-img" src="assets/{p['img']}" alt="{p['title']}" width="600" height="360">
 {md(p['body'])}
@@ -1017,7 +1016,7 @@ for i, p in enumerate(POSTS):
     meta_title, meta_desc = BLOG_META[p["slug"]]
     art = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": p["title"], "description": meta_desc,
            "image": SITE_URL + "/assets/" + p["img"],
-           "author": {"@type": "Person", "name": "Shea [TODO last name]", "jobTitle": "Owner, Sea Dog Marine", "worksFor": org_ref()},
+           "author": {"@type": "Person", "name": "Shea Ganison", "jobTitle": "Owner, Sea Dog Marine", "worksFor": org_ref()},
            "publisher": org_ref(), "mainEntityOfPage": url(fn), "wordCount": words,
            "articleSection": "Waterfront Maintenance",
            "about": ["waterfront home maintenance", "Tampa Bay"],
@@ -1030,7 +1029,7 @@ for i, p in enumerate(POSTS):
     if modified:
         art["dateModified"] = modified
         article_meta.append(f'<meta property="article:modified_time" content="{html.escape(modified, quote=True)}">')
-    article_meta.append('<meta property="article:author" content="Shea [TODO last name]">')
+    article_meta.append('<meta property="article:author" content="Shea Ganison">')
     article_meta.append('<meta property="article:section" content="Waterfront Maintenance">')
     date_comment = "<!-- TODO: BlogPosting datePublished and dateModified omitted until real dates are known. -->" if not (published and modified) else ""
     pages[fn] = page(fn, meta_title, meta_desc, body,
@@ -1214,7 +1213,7 @@ def assert_meta(pages):
                 raise SystemExit(f"blog og:type is not article on {fn}")
             if "<b>Quick answer.</b>" not in doc:
                 raise SystemExit(f"missing quick answer on {fn}")
-            if 'property="article:author" content="Shea [TODO last name]"' not in doc:
+            if 'property="article:author" content="Shea Ganison"' not in doc:
                 raise SystemExit(f"missing article:author on {fn}")
             if 'property="article:section" content="Waterfront Maintenance"' not in doc:
                 raise SystemExit(f"missing article:section on {fn}")
@@ -1245,7 +1244,7 @@ def assert_schema(pages):
                 if data.get("@type") != ["HomeAndConstructionBusiness", "LocalBusiness"]:
                     raise SystemExit(f"business @type changed on {fn}")
                 founder = data.get("founder") or {}
-                if founder.get("@type") != "Person" or founder.get("name") != "Shea [TODO last name]":
+                if founder.get("@type") != "Person" or founder.get("name") != "Shea Ganison":
                     raise SystemExit(f"founder missing on {fn}")
                 if founder.get("worksFor", {}).get("@id") != SITE_URL + "/#business":
                     raise SystemExit(f"founder worksFor @id mismatch on {fn}")
