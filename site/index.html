@@ -71,7 +71,99 @@ Do not add aggregateRating or review without real review data. --><script type="
 
 <section class="wrap"><h2 class="sec">Service Areas</h2><div class="areas"><a class="area" href="pinellas-county-dock-seawall-cleaning.html"><h3>Pinellas County</h3><p>St. Petersburg, Clearwater, Largo, Seminole, Dunedin, Tarpon Springs and more</p></a><a class="area" href="hillsborough-county-dock-seawall-cleaning.html"><h3>Hillsborough County</h3><p>Tampa, Davis Islands, Harbour Island, Apollo Beach, Ruskin, Gibsonton and more</p></a><a class="area" href="manatee-county-dock-seawall-cleaning.html"><h3>Manatee County</h3><p>Bradenton, Palmetto, Anna Maria Island, Holmes Beach, Bradenton Beach, Anna Maria and more</p></a></div></section>
 
-<div class="wrap"><section class="faq"><h2>Frequently Asked Questions</h2><details><summary>What areas does Sea Dog Marine serve?</summary><p>Sea Dog Marine serves waterfront homes and businesses in Pinellas, Hillsborough and Manatee counties, including St. Petersburg, Clearwater, Tampa, Apollo Beach, Bradenton and Anna Maria Island.</p></details><details><summary>What marine growth do you remove?</summary><p>We remove algae, barnacles, oysters, mold, slime and other marine growth from docks, seawalls, pilings, ladders and boat lifts.</p></details><details><summary>How does the free video inspection work?</summary><p>Text a short video or photos of your dock, seawall or lift to 727-699-4920. We review it and send back a recommendation and price, often the same day, with no site visit needed to get started.</p></details><details><summary>How much does dock or seawall cleaning cost?</summary><p>Price depends on size, amount of growth and access. Send a free video inspection by text to 727-699-4920 for a fast, accurate quote.</p></details><details><summary>Do you offer recurring maintenance?</summary><p>Yes. We offer maintenance plans with scheduled cleanings, storm prep and photo reports for homeowners, HOAs, rentals and marinas.</p></details></section></div>
+<div class="wrap"><section class="faq"><h2>Frequently Asked Questions</h2><details><summary>What areas does Sea Dog Marine serve?</summary><p>Sea Dog Marine serves waterfront homes and businesses in Pinellas, Hillsborough and Manatee counties, including St. Petersburg, Clearwater, Tampa, Apollo Beach, Bradenton and Anna Maria Island.</p></details><details><summary>What marine growth do you remove?</summary><p>We remove algae, barnacles, oysters, mold, slime and other marine growth from docks, seawalls, pilings, ladders and boat lifts.</p></details><details><summary>How does the free video inspection work?</summary><p>Text a short video or photos of your dock, seawall or lift to 727-699-4920. We review it and send back a recommendation and price, often the same day, with no site visit needed to get started.</p></details><details><summary>How much does dock or seawall cleaning cost?</summary><p>Price depends on size, amount of growth and access. Send a free video inspection by text to 727-699-4920 for a fast, accurate quote.</p></details><details><summary>Do you offer recurring maintenance?</summary><p>Yes. We offer maintenance plans with scheduled cleanings, storm prep and photo reports for homeowners, HOAs, rentals and marinas.</p></details></section>
+<section class="quote" id="quote">
+<h2>Request a quote</h2>
+<p id="quote-fallback">Please call or text <a href="tel:+17276994920">727-699-4920</a>. <a href="privacy-policy.html">Privacy policy</a>. <a href="sms-terms.html">SMS terms</a>.</p>
+<form id="quote-form" hidden action="#quote">
+<label for="quote-name">Name</label>
+<input id="quote-name" name="name" type="text" autocomplete="name" required>
+<div class="row">
+<div><label for="quote-phone">Phone</label>
+<input id="quote-phone" name="phone" type="tel" autocomplete="tel" required></div>
+<div><label for="quote-email">Email <span class="opt">(optional)</span></label>
+<input id="quote-email" name="email" type="email" autocomplete="email"></div>
+</div>
+<div class="row">
+<div><label for="quote-city">City</label>
+<input id="quote-city" name="city" type="text" autocomplete="address-level2" required></div>
+<div><label for="quote-service">Service</label>
+<select id="quote-service" name="service" required>
+<option value="">Select a service</option>
+<option value="Dock Cleaning">Dock Cleaning</option><option value="Seawall Cleaning">Seawall Cleaning</option><option value="Piling Cleaning">Piling Cleaning</option><option value="Boat Lift Cleaning">Boat Lift Cleaning</option><option value="Dock Ladder Cleaning">Dock Ladder Cleaning</option><option value="Piling and Dock Protection Wraps">Piling and Dock Protection Wraps</option><option value="Maintenance Plans and Storm Prep">Maintenance Plans and Storm Prep</option><option value="Hull and Boat Bottom Cleaning">Hull and Boat Bottom Cleaning</option><option value="Zinc Anode Replacement">Zinc Anode Replacement</option><option value="Propeller Cleaning">Propeller Cleaning</option>
+</select></div>
+</div>
+<label for="quote-message">Message</label>
+<textarea id="quote-message" name="message" required></textarea>
+<label class="agree"><input name="sms_consent" type="checkbox" value="yes"> <span>You may text me about this request. This is optional and is not required to get a quote. Message frequency varies. Message and data rates may apply. See the <a href="sms-terms.html">SMS terms</a>.</span></label>
+<p>We use this to reply to you. Read the <a href="privacy-policy.html">privacy policy</a>.</p>
+<button class="btn red" type="submit">Send request</button>
+<p class="status" id="quote-status" role="status"></p>
+</form>
+<noscript><p>Please call or text <a href="tel:+17276994920">727-699-4920</a></p></noscript>
+
+<script>
+(function () {
+  var form = document.getElementById("quote-form");
+  var fallback = document.getElementById("quote-fallback");
+  var status = document.getElementById("quote-status");
+  var key = "";
+  var endpoint = "";
+  if (!form) return;
+  if (!key && !endpoint) {
+    form.hidden = true;
+    if (fallback) fallback.hidden = false;
+    return;
+  }
+  form.hidden = false;
+  if (fallback) fallback.hidden = true;
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var data = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      city: form.city.value.trim(),
+      service: form.service.value,
+      message: form.message.value.trim(),
+      sms_consent: form.sms_consent.checked ? "yes" : "no"
+    };
+    var email = form.email.value.trim();
+    if (email) data.email = email;
+    var url = key ? "https://api.web3forms.com/submit" : endpoint;
+    var body = key ? Object.assign({access_key: key, subject: "Sea Dog Marine quote request"}, data) : data;
+    var button = form.querySelector("button");
+    button.disabled = true;
+    status.textContent = "Sending.";
+    fetch(url, {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify(body)
+    }).then(function (response) {
+      return response.json().then(function (payload) {
+        return {ok: response.ok, payload: payload};
+      }).catch(function () {
+        return {ok: response.ok, payload: {}};
+      });
+    }).then(function (result) {
+      var success = result.ok && result.payload.success !== false;
+      if (key && result.payload.success !== true) success = false;
+      if (success) {
+        status.textContent = "Thanks. We received your request.";
+        form.reset();
+      } else {
+        status.textContent = "Please call or text 727-699-4920";
+      }
+    }).catch(function () {
+      status.textContent = "Please call or text 727-699-4920";
+    }).then(function () {
+      button.disabled = false;
+    });
+  });
+})();
+</script>
+
+</section>
+</div>
 
 <section class="cta"><div class="wrap cta-in">
 <div><h2>Free Video Inspection</h2><p>Text a short video or a few photos of your dock, seawall, pilings or lift. We send back a recommendation and price, usually the same day.</p></div>
@@ -83,6 +175,6 @@ Do not add aggregateRating or review without real review data. --><script type="
 <p><b>Phone:</b> <a href="tel:+17276994920">727-699-4920</a> (call or text)</p><p><b>Hours:</b><br>Monday to Friday: 7:00 AM to 6:00 PM<br>Saturday: 8:00 AM to 2:00 PM</p></div>
 <div><h3>Services</h3><ul><li><a href="dock-cleaning.html">Dock Cleaning</a></li><li><a href="seawall-cleaning.html">Seawall Cleaning</a></li><li><a href="piling-cleaning.html">Piling Cleaning</a></li><li><a href="boat-lift-cleaning.html">Boat Lift Cleaning</a></li><li><a href="ladder-cleaning.html">Dock Ladder Cleaning</a></li><li><a href="piling-wraps.html">Piling and Dock Protection Wraps</a></li><li><a href="maintenance-plans.html">Maintenance Plans and Storm Prep</a></li><li><a href="hull-cleaning.html">Hull and Boat Bottom Cleaning</a></li><li><a href="zinc-anode-replacement.html">Zinc Anode Replacement</a></li><li><a href="prop-cleaning.html">Propeller Cleaning</a></li><li><a href="free-video-inspection.html">Free Video Inspection</a></li></ul></div>
 <div><h3>Service Areas</h3><ul><li><a href="pinellas-county-dock-seawall-cleaning.html">Pinellas County</a></li><li><a href="hillsborough-county-dock-seawall-cleaning.html">Hillsborough County</a></li><li><a href="manatee-county-dock-seawall-cleaning.html">Manatee County</a></li><li><a href="service-areas.html">All cities we serve</a></li><li><a href="st-petersburg-dock-seawall-cleaning.html">St. Petersburg</a></li><li><a href="clearwater-dock-seawall-cleaning.html">Clearwater</a></li><li><a href="tampa-dock-seawall-cleaning.html">Tampa</a></li><li><a href="largo-dock-seawall-cleaning.html">Largo</a></li><li><a href="seminole-dock-seawall-cleaning.html">Seminole</a></li><li><a href="dunedin-dock-seawall-cleaning.html">Dunedin</a></li><li><a href="tarpon-springs-dock-seawall-cleaning.html">Tarpon Springs</a></li><li><a href="treasure-island-dock-seawall-cleaning.html">Treasure Island</a></li><li><a href="st-pete-beach-dock-seawall-cleaning.html">St. Pete Beach</a></li><li><a href="madeira-beach-dock-seawall-cleaning.html">Madeira Beach</a></li><li><a href="apollo-beach-dock-seawall-cleaning.html">Apollo Beach</a></li><li><a href="bradenton-dock-seawall-cleaning.html">Bradenton</a></li><li><a href="palmetto-dock-seawall-cleaning.html">Palmetto</a></li><li><a href="anna-maria-island-dock-seawall-cleaning.html">Anna Maria Island</a></li><li><a href="longboat-key-dock-seawall-cleaning.html">Longboat Key</a></li><li><a href="blog.html">Waterfront Maintenance Blog</a></li></ul></div>
-</div><div class="wrap copy">&copy; 2026 Sea Dog Marine. All rights reserved.</div></footer>
+</div><div class="wrap copy">&copy; 2026 Sea Dog Marine. All rights reserved. <a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="sms-terms.html">SMS Terms</a></div></footer>
 <a class="float" href="sms:+17276994920">Text for a Free Video Inspection</a>
 </body></html>

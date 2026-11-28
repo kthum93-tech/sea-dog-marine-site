@@ -51,6 +51,17 @@ nav{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto}nav a{text-decoration:
 .arealist{padding-left:18px}.arealist li{margin:10px 0}
 .post p,.post li{max-width:72ch}.meta{color:var(--muted);font-size:.9rem}
 .inline-cta{background:#fff5f5;border:1px solid #f3c7ca;border-radius:10px;padding:16px 18px;margin:28px 0}
+.quote{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:28px 0}
+.quote h2{margin-top:0}
+.quote label{display:block;font-weight:600;margin:14px 0 4px}
+.quote input,.quote select,.quote textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+.quote textarea{min-height:120px;resize:vertical}
+.quote .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quote .opt{font-weight:500;color:var(--muted)}
+.quote .agree{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:500}
+.quote .agree input{width:auto;margin-top:5px}
+.quote .status{min-height:1.4em;margin:12px 0 0;font-weight:600}
+.quote button{margin-top:16px}
 .cta{background:var(--navy);color:#fff;margin-top:56px;padding:40px 0}
 .cta h2{color:#fff;margin-top:0}.cta p{color:#dbe6f2;max-width:620px}
 .cta-in{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}.cta-btns{display:flex;gap:12px;flex-wrap:wrap}
@@ -59,5 +70,5 @@ nav{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto}nav a{text-decoration:
 .ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}.ftr ul{list-style:none;padding:0}.ftr li{margin:5px 0}.ftr a{text-decoration:none}
 .copy{color:var(--muted);font-size:.85rem;margin-top:20px}
 .float{display:none}
-@media(max-width:900px){nav{display:none}.hero-in,.svc,.ftr-grid{grid-template-columns:1fr}.ba img{height:240px}.side .box{position:static}.cities{columns:1}
+@media(max-width:900px){nav{display:none}.hero-in,.svc,.ftr-grid,.quote .row{grid-template-columns:1fr}.ba img{height:240px}.side .box{position:static}.cities{columns:1}
 .float{display:block;position:fixed;left:12px;right:12px;bottom:12px;background:var(--red);color:#fff;text-align:center;padding:15px;border-radius:10px;font-weight:700;text-decoration:none;z-index:30;box-shadow:0 8px 24px rgba(0,0,0,.25)}}

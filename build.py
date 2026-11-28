@@ -22,6 +22,8 @@ HOURS = [  # TODO: confirm. Must match Google + Apple listings exactly
 ]
 SAME_AS = [  # TODO: paste Google Business Profile, Facebook, Instagram URLs. Leave empty. Do not invent URLs.
 ]
+WEB3FORMS_KEY = ""  # TODO: Web3Forms access key. Leave blank. Do not invent a key.
+FORM_ENDPOINT = ""  # TODO: https webhook that accepts a JSON POST. Leave blank. Do not invent a URL.
 # ====================================================================
 
 TODAY = datetime.date.today().isoformat()
@@ -461,7 +463,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
 <p><b>Phone:</b> <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> (call or text){'<br><b>Email:</b> <a href="mailto:'+EMAIL+'">'+EMAIL+'</a>' if EMAIL else ''}</p><p><b>Hours:</b><br>{hours}</p></div>
 <div><h3>Services</h3><ul>{svc_links}<li><a href="free-video-inspection.html">Free Video Inspection</a></li></ul></div>
 <div><h3>Service Areas</h3><ul>{area_links}<li><a href="blog.html">Waterfront Maintenance Blog</a></li></ul></div>
-</div><div class="wrap copy">&copy; {datetime.date.today().year} {BIZ}. All rights reserved.</div></footer>
+</div><div class="wrap copy">&copy; {datetime.date.today().year} {BIZ}. All rights reserved. <a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="sms-terms.html">SMS Terms</a></div></footer>
 <a class="float" href="sms:{PHONE_E164}">Text for a Free Video Inspection</a>
 </body></html>"""
 
@@ -653,6 +655,117 @@ CITIES = [
 
 
 
+def configured_form():
+    key = WEB3FORMS_KEY.strip() if isinstance(WEB3FORMS_KEY, str) else ""
+    endpoint = FORM_ENDPOINT.strip() if isinstance(FORM_ENDPOINT, str) else ""
+    if not key or "TODO" in key.upper():
+        key = ""
+    if not endpoint.startswith("https://") or "TODO" in endpoint.upper():
+        endpoint = ""
+    return key, endpoint
+
+def quote_section():
+    key, endpoint = configured_form()
+    configured = bool(key or endpoint)
+    options = "".join(
+        f'<option value="{html.escape(s["name"], quote=True)}">{html.escape(s["name"])}</option>'
+        for s in SERVICES
+    )
+    form_hidden = "" if configured else " hidden"
+    fallback_hidden = " hidden" if configured else ""
+    script = """
+<script>
+(function () {
+  var form = document.getElementById("quote-form");
+  var fallback = document.getElementById("quote-fallback");
+  var status = document.getElementById("quote-status");
+  var key = __KEY__;
+  var endpoint = __ENDPOINT__;
+  if (!form) return;
+  if (!key && !endpoint) {
+    form.hidden = true;
+    if (fallback) fallback.hidden = false;
+    return;
+  }
+  form.hidden = false;
+  if (fallback) fallback.hidden = true;
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var data = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      city: form.city.value.trim(),
+      service: form.service.value,
+      message: form.message.value.trim(),
+      sms_consent: form.sms_consent.checked ? "yes" : "no"
+    };
+    var email = form.email.value.trim();
+    if (email) data.email = email;
+    var url = key ? "https://api.web3forms.com/submit" : endpoint;
+    var body = key ? Object.assign({access_key: key, subject: "Sea Dog Marine quote request"}, data) : data;
+    var button = form.querySelector("button");
+    button.disabled = true;
+    status.textContent = "Sending.";
+    fetch(url, {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify(body)
+    }).then(function (response) {
+      return response.json().then(function (payload) {
+        return {ok: response.ok, payload: payload};
+      }).catch(function () {
+        return {ok: response.ok, payload: {}};
+      });
+    }).then(function (result) {
+      var success = result.ok && result.payload.success !== false;
+      if (key && result.payload.success !== true) success = false;
+      if (success) {
+        status.textContent = "Thanks. We received your request.";
+        form.reset();
+      } else {
+        status.textContent = "Please call or text 727-699-4920";
+      }
+    }).catch(function () {
+      status.textContent = "Please call or text 727-699-4920";
+    }).then(function () {
+      button.disabled = false;
+    });
+  });
+})();
+</script>
+""".replace("__KEY__", json.dumps(key)).replace("__ENDPOINT__", json.dumps(endpoint))
+    return f"""<section class="quote" id="quote">
+<h2>Request a quote</h2>
+<p id="quote-fallback"{fallback_hidden}>Please call or text <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a>. <a href="privacy-policy.html">Privacy policy</a>. <a href="sms-terms.html">SMS terms</a>.</p>
+<form id="quote-form"{form_hidden} action="#quote">
+<label for="quote-name">Name</label>
+<input id="quote-name" name="name" type="text" autocomplete="name" required>
+<div class="row">
+<div><label for="quote-phone">Phone</label>
+<input id="quote-phone" name="phone" type="tel" autocomplete="tel" required></div>
+<div><label for="quote-email">Email <span class="opt">(optional)</span></label>
+<input id="quote-email" name="email" type="email" autocomplete="email"></div>
+</div>
+<div class="row">
+<div><label for="quote-city">City</label>
+<input id="quote-city" name="city" type="text" autocomplete="address-level2" required></div>
+<div><label for="quote-service">Service</label>
+<select id="quote-service" name="service" required>
+<option value="">Select a service</option>
+{options}
+</select></div>
+</div>
+<label for="quote-message">Message</label>
+<textarea id="quote-message" name="message" required></textarea>
+<label class="agree"><input name="sms_consent" type="checkbox" value="yes"> <span>You may text me about this request. This is optional and is not required to get a quote. Message frequency varies. Message and data rates may apply. See the <a href="sms-terms.html">SMS terms</a>.</span></label>
+<p>We use this to reply to you. Read the <a href="privacy-policy.html">privacy policy</a>.</p>
+<button class="btn red" type="submit">Send request</button>
+<p class="status" id="quote-status" role="status"></p>
+</form>
+<noscript><p>Please call or text <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a></p></noscript>
+{script}
+</section>"""
+
 pages = {}
 
 # Home
@@ -690,7 +803,9 @@ home_body = f"""
 
 <section class="wrap"><h2 class="sec">Service Areas</h2><div class="areas">{county_cards}</div></section>
 
-<div class="wrap">{faq_html(FAQ_HOME)}</div>
+<div class="wrap">{faq_html(FAQ_HOME)}
+{quote_section()}
+</div>
 """
 pages["index.html"] = page("index.html",
     "Dock & Seawall Cleaning Tampa Bay | Sea Dog Marine",
@@ -749,15 +864,15 @@ for s in SERVICES:
 # County pages. Titles and descriptions are hand-counted to 50-60 and 140-155 characters.
 COUNTY_META = {
     "pinellas": (
-        "Dock Cleaning in Pinellas County, FL | Sea Dog Marine",
+        "Pinellas Dock Cleaning in Tampa Bay | Sea Dog Marine",
         "Dock and seawall cleaning in Pinellas County, FL, from St. Petersburg to Clearwater. Barnacle and oyster removal. Text for a free video inspection.",
     ),
     "hillsborough": (
-        "Dock Cleaning in Hillsborough County, FL | Sea Dog Marine",
+        "Hillsborough Dock Cleaning, Tampa Bay | Sea Dog Marine",
         "Dock and seawall cleaning in Hillsborough County, FL, including Tampa and Apollo Beach. Barnacle and oyster removal. Text for a free video inspection.",
     ),
     "manatee": (
-        "Dock Cleaning in Manatee County, FL | Sea Dog Marine",
+        "Manatee Dock Cleaning in Tampa Bay | Sea Dog Marine",
         "Dock and seawall cleaning in Manatee County, FL, from Bradenton to Anna Maria. Barnacle and oyster removal. Text for a free video inspection today.",
     ),
 }
@@ -869,6 +984,7 @@ pages["free-video-inspection.html"] = page("free-video-inspection.html", "Free V
 </ol>
 <h2>What to send</h2><ul class="checks col"><li>A 30 to 60 second video walking the dock or seawall</li><li>Close ups of pilings, ladders and lift cradles</li><li>Your address or nearest city</li><li>Your name and the best time to reach you</li></ul>
 <div class="hero-btns"><a class="btn red" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div>
+{quote_section()}
 {faq_html(insp_faq)}
 </div></section>""",
     [business_ld(), faq_schema(insp_faq), crumbs([("Home", "index.html"), ("Free Video Inspection", "free-video-inspection.html")])])
@@ -889,6 +1005,61 @@ pages["dive-services.html"] = page("dive-services.html", "Boat Dive Services in 
 <aside class="side"><div class="box"><h3>Get a Price</h3><p>Text a photo or video of your boat, its length and where it is kept.</p><a class="btn red block" href="sms:{PHONE_E164}">Text {PHONE_DISPLAY}</a><a class="btn outline block" href="tel:{PHONE_E164}">Call {PHONE_DISPLAY}</a></div></aside>
 </section>""",
     [business_ld(), faq_schema(FAQ_DIVE), crumbs([("Home", "index.html"), ("Dive Services", "dive-services.html")])])
+
+# Privacy and SMS terms. Address and email stay as TODOs. Do not invent them.
+LEGAL_EFFECTIVE = "November 28, 2026"
+privacy_body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Privacy Policy</span></div>
+<section class="wrap"><div class="svc-main">
+<h1>Privacy Policy</h1>
+<p class="lead">This policy describes how {BIZ} handles information you send when you ask for a quote or call or text us. Effective {LEGAL_EFFECTIVE}.</p>
+<p>{BIZ} is owned by Shea Ganison. Phone: <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> (call or text).</p>
+<!-- TODO: add the mailing address. Do not guess. -->
+<!-- TODO: add the business email. Do not guess. -->
+<p>A mailing address and email are not listed on this page yet.</p>
+<h2>What we collect</h2>
+<p>If you use the quote form, we receive your name, phone number, city, the service you ask about, and your message. Email is optional. The SMS consent box is optional and starts unchecked. If you call or text {PHONE_DISPLAY}, we receive that number and what you send.</p>
+<h2>How we use it</h2>
+<p>We use this information to reply to your request and to do the work you ask us to do. We do not sell your information. If the quote form is turned on, the form is delivered through the service named in the site settings so we can read it.</p>
+<h2>Texts</h2>
+<p>We text you only if you check the optional consent box on the form. Consent is not required to ask for a quote by phone. Details are in the <a href="sms-terms.html">SMS terms</a>.</p>
+<h2>How long we keep it</h2>
+<p>We keep quote requests long enough to answer them and to keep a record of work you asked us to do. You can ask us to delete a request by calling or texting {PHONE_DISPLAY}.</p>
+</div></section>"""
+pages["privacy-policy.html"] = page(
+    "privacy-policy.html",
+    "Sea Dog Marine Privacy Policy | Tampa Bay, Florida",
+    "Sea Dog Marine privacy policy for Tampa Bay quote requests. Phone 727-699-4920. Owner Shea Ganison. Mailing address and email are still to be added.",
+    privacy_body,
+    [business_ld(), crumbs([("Home", "index.html"), ("Privacy Policy", "privacy-policy.html")])],
+)
+
+sms_body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> / <span>SMS Terms</span></div>
+<section class="wrap"><div class="svc-main">
+<h1>SMS Terms</h1>
+<p class="lead">These terms cover optional text messages from {BIZ}. Effective {LEGAL_EFFECTIVE}.</p>
+<p>{BIZ} is owned by Shea Ganison. Texts come from <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a>.</p>
+<!-- TODO: add the mailing address. Do not guess. -->
+<!-- TODO: add the business email. Do not guess. -->
+<p>A mailing address and email are not listed on this page yet.</p>
+<h2>Optional consent</h2>
+<p>The quote form has an SMS consent checkbox. It is unchecked unless you check it. Checking it is optional. You can still ask for a quote by calling or texting {PHONE_DISPLAY} without checking the box.</p>
+<h2>What the texts are about</h2>
+<p>If you opt in, we may text you about the quote or the job you asked about. Message frequency varies with that request. This is not a standing promotional list.</p>
+<h2>Cost</h2>
+<p>Message and data rates may apply. That depends on your mobile plan. {BIZ} does not charge a separate fee for the texts.</p>
+<h2>Opt out and help</h2>
+<p>Reply STOP to end texts. Reply HELP for help, or call or text {PHONE_DISPLAY}.</p>
+<p>How we handle the information is in the <a href="privacy-policy.html">privacy policy</a>.</p>
+</div></section>"""
+pages["sms-terms.html"] = page(
+    "sms-terms.html",
+    "SMS Terms and Consent for Sea Dog Marine, Tampa Bay",
+    "SMS terms for Sea Dog Marine texts in Tampa Bay. The consent box is optional and is not required to request a quote. Call or text 727-699-4920.",
+    sms_body,
+    [business_ld(), crumbs([("Home", "index.html"), ("SMS Terms", "sms-terms.html")])],
+)
 
 # ------------------------------------------------------------------ blog
 from blog_posts import POSTS
@@ -926,7 +1097,7 @@ BLOG_META = {
         "Seawall growth in Tampa Bay: how barnacles, oysters and algae differ on Pinellas, Hillsborough and Manatee walls. Text for a free video inspection.",
     ),
     "signs-seawall-failing": (
-        "7 Warning Signs Your Seawall Is Failing | Sea Dog Marine",
+        "7 Seawall Warning Signs in Tampa Bay | Sea Dog Marine",
         "Seawall warning signs in Pinellas, Hillsborough and Manatee. Cleaning removes barnacles and oysters so cracks show. Text for a free video inspection.",
     ),
     "are-piling-wraps-worth-it": (
@@ -938,23 +1109,23 @@ BLOG_META = {
         "Hurricane prep for docks and seawalls in Pinellas, Hillsborough and Manatee. Remove barnacles, then photograph the wall. Text for a free video inspection.",
     ),
     "after-storm-dock-seawall-inspection": (
-        "After a Storm: Dock and Seawall Checklist | Sea Dog Marine",
+        "After a Tampa Bay Storm: Dock Checklist | Sea Dog Marine",
         "After a Tampa Bay storm, check the dock, seawall and lift before cleaning. Document damage, then remove growth. Text for a free video inspection.",
     ),
     "barnacles-boat-lift-damage": (
-        "How Barnacles Damage Your Boat Lift | Sea Dog Marine",
+        "How Barnacles Damage a Tampa Bay Boat Lift | Sea Dog Marine",
         "Boat lift cleaning in Tampa Bay stops barnacles and oysters from straining cables and scratching hulls. Text 727-699-4920 for a free video inspection.",
     ),
     "dock-ladder-safety": (
-        "Make a Dock Ladder Safe for Kids and Guests | Sea Dog Marine",
+        "Tampa Bay Dock Ladder Safety for Guests | Sea Dog Marine",
         "Dock ladder cleaning in Tampa Bay removes sharp barnacles and slick slime so kids and guests can climb safely. Text for a free video inspection today.",
     ),
     "seawall-dock-cleaning-home-value": (
-        "Clean the Dock and Seawall Before You Sell | Sea Dog Marine",
+        "Clean a Tampa Bay Dock Before You Sell | Sea Dog Marine",
         "Dock and seawall cleaning before you sell a Tampa Bay home. Barnacle and oyster removal shows the real condition. Text for a free video inspection.",
     ),
     "wood-vs-composite-dock-florida": (
-        "Wood vs Composite Dock Care in Salt Water | Sea Dog Marine",
+        "Wood vs Composite Docks in Tampa Bay | Sea Dog Marine",
         "Dock cleaning for wood and composite boards in Tampa Bay salt water, plus barnacle removal on pilings. Text 727-699-4920 for a free video inspection.",
     ),
     "marine-borers-dock-piling-rot": (
@@ -966,11 +1137,11 @@ BLOG_META = {
         "Dock and seawall care for Tampa Bay vacation rentals and seasonal homes. Barnacle removal and scheduled cleaning. Text for a free video inspection.",
     ),
     "canal-community-hoa-seawall-maintenance": (
-        "Seawall Maintenance for Canal HOAs | Sea Dog Marine",
+        "Tampa Bay Seawall Care for Canal HOAs | Sea Dog Marine",
         "Seawall cleaning for canal HOAs in Apollo Beach, Ruskin and Bradenton. Barnacle and oyster removal on a shared schedule. Text for a free inspection.",
     ),
     "buying-waterfront-home-dock-seawall-inspection": (
-        "What to Check on a Dock Before You Buy | Sea Dog Marine",
+        "What to Check on a Tampa Bay Dock | Sea Dog Marine",
         "Dock and seawall checks before buying a Tampa Bay waterfront home. Barnacle and oyster growth can hide damage. Text for a free video inspection.",
     ),
     "marine-growth-seasons-tampa-bay": (
@@ -978,10 +1149,25 @@ BLOG_META = {
         "Marine growth on Tampa Bay docks peaks in summer. Time barnacle and oyster removal for late spring and fall. Text for a free video inspection.",
     ),
     "diy-vs-professional-dock-cleaning": (
-        "DIY vs Professional Dock Cleaning Risks | Sea Dog Marine",
+        "DIY vs Pro Dock Cleaning in Tampa Bay | Sea Dog Marine",
         "DIY vs professional dock and seawall cleaning in Tampa Bay. Barnacle and oyster removal is safer with the right method. Text for a free video inspection.",
     ),
 }
+
+def real_date(value):
+    # TODO: posts keep published and modified blank until real YYYY-MM-DD dates are known. Do not invent dates.
+    value = (value or "").strip()
+    if not value or "TODO" in value.upper():
+        return ""
+    try:
+        return datetime.date.fromisoformat(value).isoformat()
+    except ValueError:
+        return ""
+
+def date_words(iso):
+    parsed = datetime.date.fromisoformat(iso)
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    return f"{months[parsed.month - 1]} {parsed.day}, {parsed.year}"
 
 for i, p in enumerate(POSTS):
     fn = "blog-" + p["slug"] + ".html"
@@ -989,21 +1175,28 @@ for i, p in enumerate(POSTS):
     nxt = [POSTS[(i + k) % len(POSTS)] for k in (1, 2, 3)]
     more = "".join(f'<li><a href="blog-{q["slug"]}.html">{q["title"]}</a></li>' for q in nxt)
     words = len(p["body"].split())
-    # TODO: set published and modified (YYYY-MM-DD) on the post when the real dates are known.
-    published = (p.get("published") or "").strip()
-    modified = (p.get("modified") or "").strip()
-    pub_label = published or "TODO"
-    mod_label = modified or "TODO"
+    published = real_date(p.get("published"))
+    modified = real_date(p.get("modified"))
     quick = p.get("quick", "").strip()
     if not quick:
         raise SystemExit(f"missing quick answer for {p['slug']}")
+    meta_bits = [f"By Shea Ganison, Owner, {BIZ}"]
+    if published:
+        meta_bits.append("Published: " + html.escape(date_words(published)))
+    if modified:
+        meta_bits.append("Updated: " + html.escape(date_words(modified)))
+    meta_bits.append("Serving Pinellas, Hillsborough and Manatee Counties")
+    meta_bits.append(f"{max(2, words // 200)} min read")
+    date_note = ""
+    if not published or not modified:
+        date_note = "<!-- TODO: replace Published and Updated with the real dates for this post. datePublished and dateModified must use those same dates. Missing dates are omitted from the byline and from BlogPosting rather than shown as TODO or invented. -->"
     body = f"""
 <div class="wrap crumbs"><a href="index.html">Home</a> / <a href="blog.html">Blog</a> / <span>{p['title']}</span></div>
 <section class="wrap svc"><article class="svc-main post">
 <h1>{p['title']}</h1>
 <p><b>Quick answer.</b> {html.escape(quick)}</p>
-<p class="meta">By Shea Ganison, Owner, {BIZ} &middot; Published: {html.escape(pub_label)} &middot; Updated: {html.escape(mod_label)} &middot; Serving Pinellas, Hillsborough and Manatee Counties &middot; {max(2, words // 200)} min read</p>
-<!-- TODO: replace Published and Updated with the real dates for this post. datePublished and dateModified must use those same dates. Both are unknown, so the schema fields are omitted rather than invented. -->
+<p class="meta">{' &middot; '.join(meta_bits)}</p>
+{date_note}
 <img class="svc-img" src="assets/{p['img']}" alt="{p['title']}" width="600" height="360">
 {md(p['body'])}
 <div class="inline-cta"><b>Free video inspection:</b> text a short video of your dock, seawall or lift to <a href="sms:{PHONE_E164}">{PHONE_DISPLAY}</a> for a same day recommendation and price.</div>
@@ -1022,7 +1215,9 @@ for i, p in enumerate(POSTS):
            "about": ["waterfront home maintenance", "Tampa Bay"],
            "spatialCoverage": [{"@type": "AdministrativeArea", "name": c["name"] + ", FL"} for c in COUNTIES.values()]}
     # Dates stay off the schema until they are real ISO dates. A TODO string would be invalid.
-    article_meta = ['<!-- TODO: add article:published_time and article:modified_time when real dates are set on this post. Do not invent dates. -->']
+    article_meta = []
+    if not (published and modified):
+        article_meta.append('<!-- TODO: add article:published_time and article:modified_time when real dates are set on this post. Do not invent dates. -->')
     if published:
         art["datePublished"] = published
         article_meta.append(f'<meta property="article:published_time" content="{html.escape(published, quote=True)}">')
@@ -1070,7 +1265,7 @@ for fn, doc in pages.items():
 
 not_found = page(
     "404.html",
-    "Page Not Found | Sea Dog Marine",
+    "Page Not Found in Tampa Bay | Sea Dog Marine",
     "That page is not on the Sea Dog Marine site. Call or text 727-699-4920 for dock and seawall cleaning in Pinellas, Hillsborough and Manatee counties.",
     f"""<div class="wrap crumbs"><a href="index.html">Home</a> / <span>Page not found</span></div>
 <section class="wrap"><h1>Page not found</h1>
@@ -1162,6 +1357,9 @@ llms = f"""# {BIZ}
 ## Contact
 """ + llms_link("free-video-inspection.html") + """
 
+## Policies
+""" + llms_link("privacy-policy.html") + "\n" + llms_link("sms-terms.html") + """
+
 ## Guides for waterfront homeowners
 """ + llms_link("blog.html") + "\n" + "\n".join(llms_link("blog-" + p["slug"] + ".html") for p in POSTS) + "\n"
 if PHONE_DISPLAY not in llms or "Pinellas County, Hillsborough County and Manatee County" not in llms:
@@ -1182,6 +1380,9 @@ for city in CITIES:
 for p in POSTS:
     if url("blog-" + p["slug"] + ".html") not in llms:
         raise SystemExit(f"llms.txt missing {p['slug']}")
+for legal in ("privacy-policy.html", "sms-terms.html"):
+    if url(legal) not in llms:
+        raise SystemExit(f"llms.txt missing {legal}")
 open(f"{OUT}/llms.txt", "w").write(llms)
 
 def assert_meta(pages):
@@ -1194,6 +1395,8 @@ def assert_meta(pages):
         desc = html.unescape(raw_desc)
         if not (50 <= len(title) <= 60):
             raise SystemExit(f"title length {len(title)} for {fn}: {title}")
+        if "Tampa Bay" not in title and not any(city["name"] in title for city in CITIES):
+            raise SystemExit(f"title needs a city or Tampa Bay: {fn}: {title}")
         if not (140 <= len(desc) <= 155):
             raise SystemExit(f"description length {len(desc)} for {fn}: {desc}")
         if "\u2014" in doc:
@@ -1215,6 +1418,14 @@ def assert_meta(pages):
                 raise SystemExit(f"missing quick answer on {fn}")
             if 'property="article:author" content="Shea Ganison"' not in doc:
                 raise SystemExit(f"missing article:author on {fn}")
+            if "Published: TODO" in doc or "Updated: TODO" in doc:
+                raise SystemExit(f"visible TODO date on {fn}")
+            if not real_date(next(p.get("published") for p in POSTS if fn == "blog-" + p["slug"] + ".html")):
+                if '"datePublished"' in doc:
+                    raise SystemExit(f"datePublished set without a real date on {fn}")
+            if not real_date(next(p.get("modified") for p in POSTS if fn == "blog-" + p["slug"] + ".html")):
+                if '"dateModified"' in doc:
+                    raise SystemExit(f"dateModified set without a real date on {fn}")
             if 'property="article:section" content="Waterfront Maintenance"' not in doc:
                 raise SystemExit(f"missing article:section on {fn}")
             if '"@type": "Person"' not in doc or '"jobTitle": "Owner, Sea Dog Marine"' not in doc:
@@ -1308,7 +1519,7 @@ def assert_schema(pages):
 assert_meta(pages)
 assert_schema(pages)
 not_found_html = open(f"{OUT}/404.html").read()
-if "<title>Page Not Found | Sea Dog Marine</title>" not in not_found_html:
+if "<title>Page Not Found in Tampa Bay | Sea Dog Marine</title>" not in not_found_html:
     raise SystemExit("404 title is wrong")
 if 'name="robots" content="noindex, follow"' not in not_found_html:
     raise SystemExit("404 robots must be noindex, follow")
@@ -1316,6 +1527,21 @@ if "application/ld+json" in not_found_html:
     raise SystemExit("404 must not repeat homepage schema")
 if "404.html" in open(f"{OUT}/sitemap.xml").read():
     raise SystemExit("404 must stay out of the sitemap")
+sitemap_text = open(f"{OUT}/sitemap.xml").read()
+for legal in ("privacy-policy.html", "sms-terms.html"):
+    if url(legal) not in sitemap_text:
+        raise SystemExit(f"sitemap missing {legal}")
+    if f'href="{legal}"' not in pages["index.html"]:
+        raise SystemExit(f"footer missing {legal}")
+for form_page in ("index.html", "free-video-inspection.html"):
+    doc = pages[form_page]
+    if 'id="quote-form"' not in doc or 'name="sms_consent"' not in doc:
+        raise SystemExit(f"quote form missing on {form_page}")
+    if 'href="sms-terms.html"' not in doc:
+        raise SystemExit(f"form missing SMS terms link on {form_page}")
+    key, endpoint = configured_form()
+    if not key and not endpoint and "Please call or text 727-699-4920" not in doc:
+        raise SystemExit(f"missing call fallback on {form_page}")
 for city in CITIES:
     doc = pages[city["slug"] + ".html"]
     h1 = f"Dock, Seawall and Hull Cleaning in {city['name']}, FL"
