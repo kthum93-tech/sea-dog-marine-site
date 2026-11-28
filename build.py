@@ -11,19 +11,20 @@ BIZ = "Sea Dog Marine"
 TAGLINE = "Dock, Hull and Marine Repair"
 PHONE_DISPLAY = "727-699-4920"
 PHONE_E164 = "+17276994920"
-EMAIL = ""            # TODO: add business email (leave blank to hide)
-BASE_CITY = ""        # TODO: city Shea operates from, e.g. "St. Petersburg"
-POSTAL_CODE = ""      # TODO: ZIP code for the base city. Leave blank. Do not guess.
+EMAIL = ""            # TODO: public business email. Leave blank. Do not publish the form inbox here.
+BASE_CITY = "Indian Rocks Beach"
+POSTAL_CODE = "33785"
+# TODO: street address omitted. Service-area business. Do not add address.streetAddress.
 GEO = None            # TODO: dict with real "latitude" and "longitude" floats from a map pin. Leave None. Do not guess.
 HAS_MAP = ""          # TODO: Google Business Profile map URL. Leave blank. Do not invent a URL.
-HOURS = [  # TODO: confirm. Must match Google + Apple listings exactly
+HOURS = [  # Confirmed by Shea. Monday to Friday 7:00 to 18:00, Saturday 8:00 to 14:00.
     ("Mo,Tu,We,Th,Fr", "07:00", "18:00", "Monday to Friday: 7:00 AM to 6:00 PM"),
     ("Sa", "08:00", "14:00", "Saturday: 8:00 AM to 2:00 PM"),
 ]
 SAME_AS = [  # TODO: paste Google Business Profile, Facebook, Instagram URLs. Leave empty. Do not invent URLs.
 ]
 WEB3FORMS_KEY = ""  # TODO: Web3Forms access key. Leave blank. Do not invent a key.
-FORM_ENDPOINT = ""  # TODO: https webhook that accepts a JSON POST. Leave blank. Do not invent a URL.
+FORM_ENDPOINT = "https://formsubmit.co/ajax/swgan7o7@gmail.com"
 # ====================================================================
 
 TODAY = datetime.date.today().isoformat()
@@ -305,7 +306,7 @@ def business_schema():
         "name": BIZ,
         "alternateName": "Sea Dog Marine Cleaning",
         "slogan": "Remove Growth. Restore. Protect.",
-        "description": "Sea Dog Marine provides professional dock cleaning, seawall cleaning, piling cleaning and barnacle removal, boat lift cleaning, ladder degrowth, piling wraps, waterfront maintenance plans and dive services (in-water hull cleaning, zinc anode replacement and propeller cleaning) in Pinellas, Hillsborough and Manatee counties, Florida.",
+        "description": "Sea Dog Marine, based in Indian Rocks Beach, provides professional dock cleaning, seawall cleaning, piling cleaning and barnacle removal, boat lift cleaning, ladder degrowth, piling wraps, waterfront maintenance plans and dive services (in-water hull cleaning, zinc anode replacement and propeller cleaning) in Pinellas, Hillsborough and Manatee counties, Florida.",
         "url": SITE_URL + "/",
         "telephone": PHONE_E164,
         "image": SITE_URL + "/assets/og-flyer.jpg",
@@ -353,10 +354,11 @@ def local_todo_comment():
         missing.append("address.addressLocality (set BASE_CITY)")
     if not real_text(POSTAL_CODE):
         missing.append("address.postalCode (set POSTAL_CODE)")
+    missing.append("address.streetAddress omitted (service-area business). Do not invent a street.")
     if not (isinstance(GEO, dict) and isinstance(GEO.get("latitude"), (int, float)) and not isinstance(GEO.get("latitude"), bool)):
         missing.append("geo GeoCoordinates (set GEO latitude and longitude from a real pin)")
     if not (real_text(EMAIL) and "@" in EMAIL):
-        missing.append("email (set EMAIL)")
+        missing.append("email (set EMAIL). Do not publish the quote-form inbox as the public email.")
     if not any(isinstance(u, str) and u.startswith("https://") for u in SAME_AS):
         missing.append("sameAs URLs for Google Business Profile, Facebook and Instagram (set SAME_AS)")
     if not real_text(HAS_MAP).startswith("https://"):
@@ -364,7 +366,7 @@ def local_todo_comment():
     lines = "\n".join("- " + item for item in missing)
     return (
         "<!-- TODO for Kyle/Shea: LocalBusiness fields below are omitted so the JSON-LD stays valid. "
-        "Fill the real values in the CONFIG block of build.py. Do not guess coordinates, URLs, a city or a ZIP.\n"
+        "Fill the real values in the CONFIG block of build.py. Do not guess coordinates, URLs, a street, or a public email.\n"
         + lines
         + "\nDo not add aggregateRating or review without real review data. -->"
     )
@@ -459,7 +461,7 @@ def page(fname, title, desc, body, schemas, og_img="assets/og-flyer.jpg", og_typ
 {cta_block()}
 </main>
 <footer class="ftr"><div class="wrap ftr-grid">
-<div><h3>{BIZ}</h3><p>Professional marine cleaning and maintenance for docks, seawalls, pilings, ladders and boat lifts across Tampa Bay.</p>
+<div><h3>{BIZ}</h3><p>Based in Indian Rocks Beach, serving Pinellas, Hillsborough and Manatee. Professional marine cleaning and maintenance for docks, seawalls, pilings, ladders and boat lifts.</p>
 <p><b>Phone:</b> <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> (call or text){'<br><b>Email:</b> <a href="mailto:'+EMAIL+'">'+EMAIL+'</a>' if EMAIL else ''}</p><p><b>Hours:</b><br>{hours}</p></div>
 <div><h3>Services</h3><ul>{svc_links}<li><a href="free-video-inspection.html">Free Video Inspection</a></li></ul></div>
 <div><h3>Service Areas</h3><ul>{area_links}<li><a href="blog.html">Waterfront Maintenance Blog</a></li></ul></div>
@@ -701,9 +703,21 @@ def quote_section():
     };
     var email = form.email.value.trim();
     if (email) data.email = email;
+    var honey = form._honey ? form._honey.value : "";
+    if (honey) {
+      status.textContent = "Please call or text 727-699-4920";
+      return;
+    }
     var url = key ? "https://api.web3forms.com/submit" : endpoint;
-    var body = key ? Object.assign({access_key: key, subject: "Sea Dog Marine quote request"}, data) : data;
-    var button = form.querySelector("button");
+    var body = key
+      ? Object.assign({access_key: key, subject: "Sea Dog Marine quote request"}, data)
+      : Object.assign({
+          _subject: "New quote request - Sea Dog Marine",
+          _template: "table",
+          _captcha: "false",
+          _honey: honey
+        }, data);
+    var button = form.querySelector("button[type='submit']");
     button.disabled = true;
     status.textContent = "Sending.";
     fetch(url, {
@@ -717,10 +731,10 @@ def quote_section():
         return {ok: response.ok, payload: {}};
       });
     }).then(function (result) {
-      var success = result.ok && result.payload.success !== false;
-      if (key && result.payload.success !== true) success = false;
+      var flag = result.payload ? result.payload.success : false;
+      var success = result.ok && (flag === true || flag === "true");
       if (success) {
-        status.textContent = "Thanks. We received your request.";
+        status.textContent = "Thank you. We received your quote request.";
         form.reset();
       } else {
         status.textContent = "Please call or text 727-699-4920";
@@ -738,6 +752,7 @@ def quote_section():
 <h2>Request a quote</h2>
 <p id="quote-fallback"{fallback_hidden}>Please call or text <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a>. <a href="privacy-policy.html">Privacy policy</a>. <a href="sms-terms.html">SMS terms</a>.</p>
 <form id="quote-form"{form_hidden} action="#quote">
+<input class="hp" name="_honey" type="text" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
 <label for="quote-name">Name</label>
 <input id="quote-name" name="name" type="text" autocomplete="name" required>
 <div class="row">
@@ -786,7 +801,7 @@ home_body = f"""
 
 <section class="wrap answer">
 <h2>What does {BIZ} do?</h2>
-<p>{BIZ} is a marine cleaning and maintenance company serving waterfront property owners in Pinellas, Hillsborough and Manatee counties, Florida. Services include dock cleaning, seawall cleaning, dock piling cleaning and barnacle removal, boat lift cleaning, dock ladder degrowth, piling and dock protection wraps, storm prep and seasonal cleaning, recurring maintenance plans, and dive services including in-water hull and boat bottom cleaning, zinc anode replacement and propeller cleaning. Customers can get a free video inspection by calling or texting {PHONE_DISPLAY}.</p>
+<p>Based in Indian Rocks Beach, serving Pinellas, Hillsborough and Manatee. {BIZ} is a marine cleaning and maintenance company for waterfront property owners in those counties. Services include dock cleaning, seawall cleaning, dock piling cleaning and barnacle removal, boat lift cleaning, dock ladder degrowth, piling and dock protection wraps, storm prep and seasonal cleaning, recurring maintenance plans, and dive services including in-water hull and boat bottom cleaning, zinc anode replacement and propeller cleaning. Customers can get a free video inspection by calling or texting {PHONE_DISPLAY}.</p>
 </section>
 
 <section class="wrap"><h2 class="sec">Our Services</h2><div class="cards">{svc_cards}</div></section>
@@ -1006,17 +1021,18 @@ pages["dive-services.html"] = page("dive-services.html", "Boat Dive Services in 
 </section>""",
     [business_ld(), faq_schema(FAQ_DIVE), crumbs([("Home", "index.html"), ("Dive Services", "dive-services.html")])])
 
-# Privacy and SMS terms. Address and email stay as TODOs. Do not invent them.
+# Privacy and SMS terms. City and ZIP only. No street. Email stays a TODO.
 LEGAL_EFFECTIVE = "November 28, 2026"
+HOME_BASE = "Indian Rocks Beach, FL 33785"
 privacy_body = f"""
 <div class="wrap crumbs"><a href="index.html">Home</a> / <span>Privacy Policy</span></div>
 <section class="wrap"><div class="svc-main">
 <h1>Privacy Policy</h1>
 <p class="lead">This policy describes how {BIZ} handles information you send when you ask for a quote or call or text us. Effective {LEGAL_EFFECTIVE}.</p>
 <p>{BIZ} is owned by Shea Ganison. Phone: <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a> (call or text).</p>
-<!-- TODO: add the mailing address. Do not guess. -->
-<!-- TODO: add the business email. Do not guess. -->
-<p>A mailing address and email are not listed on this page yet.</p>
+<p>Home base: {HOME_BASE}. No street address is published. This is a service-area business.</p>
+<!-- TODO: add the business email. Do not guess. Do not publish the quote-form inbox here. -->
+<p>A public email address is not listed on this page yet.</p>
 <h2>What we collect</h2>
 <p>If you use the quote form, we receive your name, phone number, city, the service you ask about, and your message. Email is optional. The SMS consent box is optional and starts unchecked. If you call or text {PHONE_DISPLAY}, we receive that number and what you send.</p>
 <h2>How we use it</h2>
@@ -1029,7 +1045,7 @@ privacy_body = f"""
 pages["privacy-policy.html"] = page(
     "privacy-policy.html",
     "Sea Dog Marine Privacy Policy | Tampa Bay, Florida",
-    "Sea Dog Marine privacy policy for Tampa Bay quote requests. Phone 727-699-4920. Owner Shea Ganison. Mailing address and email are still to be added.",
+    "Sea Dog Marine privacy policy for Tampa Bay quote requests. Phone 727-699-4920. Owner Shea Ganison. Home base is Indian Rocks Beach, FL 33785.",
     privacy_body,
     [business_ld(), crumbs([("Home", "index.html"), ("Privacy Policy", "privacy-policy.html")])],
 )
@@ -1040,9 +1056,9 @@ sms_body = f"""
 <h1>SMS Terms</h1>
 <p class="lead">These terms cover optional text messages from {BIZ}. Effective {LEGAL_EFFECTIVE}.</p>
 <p>{BIZ} is owned by Shea Ganison. Texts come from <a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a>.</p>
-<!-- TODO: add the mailing address. Do not guess. -->
-<!-- TODO: add the business email. Do not guess. -->
-<p>A mailing address and email are not listed on this page yet.</p>
+<p>Home base: {HOME_BASE}. No street address is published. This is a service-area business.</p>
+<!-- TODO: add the business email. Do not guess. Do not publish the quote-form inbox here. -->
+<p>A public email address is not listed on this page yet.</p>
 <h2>Optional consent</h2>
 <p>The quote form has an SMS consent checkbox. It is unchecked unless you check it. Checking it is optional. You can still ask for a quote by calling or texting {PHONE_DISPLAY} without checking the box.</p>
 <h2>What the texts are about</h2>
@@ -1341,6 +1357,7 @@ llms = f"""# {BIZ}
 ## Key facts
 - Business name: {BIZ}
 - Phone (call or text): {PHONE_DISPLAY}
+- Based in Indian Rocks Beach, serving Pinellas, Hillsborough and Manatee. No public street address.
 - Service area: Pinellas County, Hillsborough County and Manatee County, Florida
 - Cities: {', '.join(sum([c['cities'] for c in COUNTIES.values()], []))}
 - Removes: algae, barnacles, oysters, mold and marine growth
@@ -1463,8 +1480,12 @@ def assert_schema(pages):
                     if key in data:
                         raise SystemExit(f"{key} shipped without real data on {fn}")
                 addr = data.get("address") or {}
-                if "addressLocality" in addr or "postalCode" in addr:
-                    raise SystemExit(f"address placeholder shipped on {fn}")
+                if "streetAddress" in addr:
+                    raise SystemExit(f"street address shipped on {fn}")
+                if addr.get("addressRegion") != "FL" or addr.get("addressCountry") != "US":
+                    raise SystemExit(f"address region changed on {fn}")
+                if addr.get("addressLocality") != real_text(BASE_CITY) or addr.get("postalCode") != real_text(POSTAL_CODE):
+                    raise SystemExit(f"address locality or ZIP mismatch on {fn}")
             if data.get("@type") == "Service":
                 for key in ("serviceType", "description", "areaServed", "provider"):
                     if not data.get(key):
@@ -1542,6 +1563,14 @@ for form_page in ("index.html", "free-video-inspection.html"):
     key, endpoint = configured_form()
     if not key and not endpoint and "Please call or text 727-699-4920" not in doc:
         raise SystemExit(f"missing call fallback on {form_page}")
+    if endpoint or key:
+        if 'id="quote-form" hidden' in doc:
+            raise SystemExit(f"quote form should be visible on {form_page}")
+        for token in ('_subject: "New quote request - Sea Dog Marine"', '_template: "table"', '_captcha: "false"', 'name="_honey"'):
+            if token not in doc:
+                raise SystemExit(f"quote form missing {token} on {form_page}")
+        if "Thank you. We received your quote request." not in doc:
+            raise SystemExit(f"missing thank-you message on {form_page}")
 for city in CITIES:
     doc = pages[city["slug"] + ".html"]
     h1 = f"Dock, Seawall and Hull Cleaning in {city['name']}, FL"

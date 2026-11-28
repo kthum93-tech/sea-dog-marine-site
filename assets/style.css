@@ -61,6 +61,7 @@ nav{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto}nav a{text-decoration:
 .quote .agree{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:500}
 .quote .agree input{width:auto;margin-top:5px}
 .quote .status{min-height:1.4em;margin:12px 0 0;font-weight:600}
+.quote .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .quote button{margin-top:16px}
 .cta{background:var(--navy);color:#fff;margin-top:56px;padding:40px 0}
 .cta h2{color:#fff;margin-top:0}.cta p{color:#dbe6f2;max-width:620px}
