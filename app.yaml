@@ -1,0 +1,37 @@
+# Sea Dog Marine static site.
+# App Platform does not apply this file on git push.
+# Update the existing app (id 9cc5e2cf-e9a4-4195-ae69-124e54294b98) with:
+#   doctl apps update 9cc5e2cf-e9a4-4195-ae69-124e54294b98 --spec app.yaml
+# Do not set catchall_document. That would return 200 for missing URLs.
+name: sea-dog-marine-site
+region: nyc
+domains:
+  - domain: www.seadogmarinefl.com
+    type: PRIMARY
+  - domain: seadogmarinefl.com
+    type: ALIAS
+static_sites:
+  - name: sea-dog-marine-site
+    git:
+      repo_clone_url: https://github.com/kthum93-tech/sea-dog-marine-site.git
+      branch: main
+    source_dir: /
+    output_dir: site
+    index_document: index.html
+    error_document: 404.html
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: /
+        authority:
+          exact: seadogmarinefl.com
+      redirect:
+        authority: www.seadogmarinefl.com
+        scheme: https
+        redirect_code: 301
+    - match:
+        path:
+          prefix: /
+      component:
+        name: sea-dog-marine-site
